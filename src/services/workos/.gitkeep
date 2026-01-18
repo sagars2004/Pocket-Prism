@@ -1,0 +1,9 @@
+# WorkOS Integration
+#
+# Future integration for WorkOS authentication and SSO.
+# See docs/FUTURE_INTEGRATIONS.md for implementation plan.
+#
+# Planned files:
+# - auth.ts - WorkOS authentication service
+# - sso.ts - SSO configuration
+# - user.ts - User profile management

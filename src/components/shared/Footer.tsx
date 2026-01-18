@@ -9,12 +9,11 @@ import { spacing } from '../../theme/spacing';
 
 interface FooterProps {
   onHomePress?: () => void;
-  onProfilePress?: () => void;
   onSettingsPress?: () => void;
   navigation?: any; // For navigation to settings
 }
 
-export function Footer({ onHomePress, onProfilePress, onSettingsPress, navigation }: FooterProps) {
+export function Footer({ onHomePress, onSettingsPress, navigation }: FooterProps) {
   const { currentColors } = useTheme();
   const { clearUserData } = useUser();
   const { resetOnboarding } = useOnboarding();
@@ -73,13 +72,6 @@ export function Footer({ onHomePress, onProfilePress, onSettingsPress, navigatio
     );
   };
 
-  const handleProfilePress = () => {
-    if (onProfilePress) {
-      onProfilePress();
-    }
-    // TODO: Navigate to profile when created
-  };
-
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -124,20 +116,6 @@ export function Footer({ onHomePress, onProfilePress, onSettingsPress, navigatio
           style={styles.icon}
         />
         <Text style={styles.label}>Home</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity
-        style={styles.iconButton}
-        onPress={handleProfilePress}
-        activeOpacity={0.7}
-      >
-        <MaterialCommunityIcons
-          name="account-outline"
-          size={28}
-          color={currentColors.text}
-          style={styles.icon}
-        />
-        <Text style={styles.label}>Profile</Text>
       </TouchableOpacity>
       
       <TouchableOpacity

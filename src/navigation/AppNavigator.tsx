@@ -124,10 +124,6 @@ export function AppNavigator() {
                   routes: [{ name: 'Dashboard' }],
                 });
               }}
-              onNavigateToProfile={() => {
-                // TODO: Navigate to profile screen when created
-                props.navigation.goBack();
-              }}
             />
           )}
         </Stack.Screen>

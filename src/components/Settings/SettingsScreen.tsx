@@ -11,11 +11,10 @@ import { spacing } from '../../theme/spacing';
 interface SettingsScreenProps {
   onBack: () => void;
   onNavigateToHome?: () => void;
-  onNavigateToProfile?: () => void;
   navigation?: any;
 }
 
-export function SettingsScreen({ onBack, onNavigateToHome, onNavigateToProfile, navigation }: SettingsScreenProps) {
+export function SettingsScreen({ onBack, onNavigateToHome, navigation }: SettingsScreenProps) {
   const { userData, clearUserData } = useUser();
   const { themeMode, setThemeMode, currentColors } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
@@ -382,7 +381,6 @@ export function SettingsScreen({ onBack, onNavigateToHome, onNavigateToProfile, 
         <Footer
           navigation={navigation}
           onHomePress={onNavigateToHome}
-          onProfilePress={onNavigateToProfile}
           onSettingsPress={() => {}} // Already on settings
         />
       </SafeAreaView>
