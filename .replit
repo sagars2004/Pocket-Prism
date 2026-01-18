@@ -1,5 +1,6 @@
 language = "nodejs"
 run = "npm start"
+modules = ["nodejs-20"]
 
 [deploy]
 run = ["sh", "-c", "npm run web"]
@@ -24,3 +25,6 @@ pattern = "**/*.{js,jsx}"
 
 [languages.typescript]
 pattern = "**/*.{ts,tsx}"
+
+[nix]
+channel = "stable-25_05"
