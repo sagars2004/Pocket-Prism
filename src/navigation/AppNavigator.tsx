@@ -27,8 +27,9 @@ export function AppNavigator() {
 
   // Start with Welcome - userData loads asynchronously
   // Navigation will handle routing to Dashboard if user has completed onboarding
-  const initialRoute: keyof RootStackParamList = 
-    userData?.onboardingComplete ? 'Dashboard' : 'Welcome';
+  // Ensure onboardingComplete is properly converted to boolean
+  const onboardingComplete = userData?.onboardingComplete === true;
+  const initialRoute: keyof RootStackParamList = onboardingComplete ? 'Dashboard' : 'Welcome';
 
   return (
     <NavigationContainer>

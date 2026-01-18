@@ -30,20 +30,20 @@ export function Button({
 }: ButtonProps) {
   const buttonStyle = [
     styles.button,
-    variant === 'primary' && styles.buttonPrimary,
-    variant === 'secondary' && styles.buttonSecondary,
-    variant === 'outline' && styles.buttonOutline,
-    disabled && styles.buttonDisabled,
+    variant === 'primary' ? styles.buttonPrimary : null,
+    variant === 'secondary' ? styles.buttonSecondary : null,
+    variant === 'outline' ? styles.buttonOutline : null,
+    disabled ? styles.buttonDisabled : null,
     style,
-  ];
+  ].filter(Boolean);
 
   const textStyle = [
     styles.text,
-    variant === 'primary' && styles.textPrimary,
-    variant === 'secondary' && styles.textSecondary,
-    variant === 'outline' && styles.textOutline,
-    disabled && styles.textDisabled,
-  ];
+    variant === 'primary' ? styles.textPrimary : null,
+    variant === 'secondary' ? styles.textSecondary : null,
+    variant === 'outline' ? styles.textOutline : null,
+    disabled ? styles.textDisabled : null,
+  ].filter(Boolean);
 
   return (
     <TouchableOpacity

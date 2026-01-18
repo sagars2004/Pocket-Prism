@@ -21,6 +21,13 @@ PocketPrism translates salary, taxes, and benefits into plain English and helps 
 - **State Management**: React Context API
 - **Styling**: React Native StyleSheet with custom theme system
 
+### Planned Integrations
+
+See [docs/FUTURE_INTEGRATIONS.md](docs/FUTURE_INTEGRATIONS.md) for details on planned integrations:
+- **Capacitor**: Native iOS/Android capabilities
+- **WorkOS**: Authentication and SSO
+- **Convex**: Real-time backend database
+
 ## Replit Integration
 
 This project is designed to work with Replit tools:
@@ -47,7 +54,7 @@ npm install
 # Start the development server
 npm start
 
-# Run on iOS simulator
+# Run on iOS simulator (Mac only, requires Xcode)
 npm run ios
 
 # Run on Android emulator
@@ -56,6 +63,34 @@ npm run android
 # Run in web browser
 npm run web
 ```
+
+## Testing the App
+
+See [docs/TESTING.md](docs/TESTING.md) for comprehensive testing guide.
+
+### Quick Testing Options
+
+1. **Expo Go (Easiest)** - Test on your iPhone:
+   ```bash
+   npm start
+   # Scan QR code with Camera app (iOS) or Expo Go app (Android)
+   ```
+
+2. **iOS Simulator** (Mac only):
+   ```bash
+   npm run ios
+   ```
+
+3. **Web Browser** (Quick UI testing):
+   ```bash
+   npm run web
+   ```
+
+4. **Replit Preview** - When imported to Replit, use the web preview with mobile viewport settings (375×667 for iPhone SE).
+
+### TestFlight (Production Testing)
+
+For TestFlight deployment, see the [Testing Guide](docs/TESTING.md#6-testflight-production-testing).
 
 ## Project Structure
 
@@ -72,7 +107,10 @@ src/
 ├── services/           # Business logic and integrations
 │   ├── calculations/   # Paycheck and tradeoff calculations
 │   ├── replit/        # Replit integrations (DB, AI, config)
-│   └── storage/       # Local storage utilities
+│   ├── storage/       # Local storage utilities
+│   ├── convex/        # Convex database (planned)
+│   ├── workos/        # WorkOS authentication (planned)
+│   └── capacitor/     # Capacitor native plugins (planned)
 ├── theme/             # Design system (colors, typography, spacing)
 ├── types/             # TypeScript type definitions
 └── utils/             # Utility functions (formatters, placeholders)

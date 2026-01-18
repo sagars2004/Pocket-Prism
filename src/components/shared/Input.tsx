@@ -22,7 +22,7 @@ export function Input({ label, error, containerStyle, ...textInputProps }: Input
     <View style={[styles.container, containerStyle]}>
       {label && <Text style={styles.label}>{label}</Text>}
       <TextInput
-        style={[styles.input, error && styles.inputError]}
+        style={[styles.input, error ? styles.inputError : null].filter(Boolean)}
         placeholderTextColor={colors.textTertiary}
         {...textInputProps}
       />

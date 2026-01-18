@@ -1,17 +1,17 @@
 import React, { ReactNode } from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { colors } from '../../theme/colors';
 import { spacing } from '../../theme/spacing';
 
 interface CardProps {
   children: ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   padding?: boolean;
 }
 
 export function Card({ children, style, padding = true }: CardProps) {
   return (
-    <View style={[styles.card, padding && styles.cardPadding, style]}>
+    <View style={[styles.card, padding ? styles.cardPadding : null, style].filter(Boolean)}>
       {children}
     </View>
   );

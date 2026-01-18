@@ -1,3 +1,14 @@
+/**
+ * User Context
+ * 
+ * Manages global user state (salary, expenses, onboarding status).
+ * 
+ * Future Integration Notes:
+ * - Will integrate with WorkOS for authentication (see docs/FUTURE_INTEGRATIONS.md)
+ * - Will support Convex database for real-time sync (see docs/FUTURE_INTEGRATIONS.md)
+ * - Currently uses Replit DB with AsyncStorage fallback
+ */
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { UserData } from '../types/user';
 import { loadUserDataFromReplit, saveUserDataToReplit } from '../services/replit/database';

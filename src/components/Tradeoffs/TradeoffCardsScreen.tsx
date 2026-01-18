@@ -88,13 +88,13 @@ export function TradeoffCardsScreen({ onBack }: TradeoffCardsScreenProps) {
         <TouchableOpacity
           onPress={handlePrevious}
           disabled={currentIndex === 0}
-          style={[styles.navButton, currentIndex === 0 && styles.navButtonDisabled]}
+          style={[styles.navButton, currentIndex === 0 ? styles.navButtonDisabled : null].filter(Boolean)}
         >
           <Text
             style={[
               styles.navButtonText,
-              currentIndex === 0 && styles.navButtonTextDisabled,
-            ]}
+              currentIndex === 0 ? styles.navButtonTextDisabled : null,
+            ].filter(Boolean)}
           >
             ← Previous
           </Text>
@@ -104,14 +104,14 @@ export function TradeoffCardsScreen({ onBack }: TradeoffCardsScreenProps) {
           disabled={currentIndex === cards.length - 1}
           style={[
             styles.navButton,
-            currentIndex === cards.length - 1 && styles.navButtonDisabled,
-          ]}
+            currentIndex === cards.length - 1 ? styles.navButtonDisabled : null,
+          ].filter(Boolean)}
         >
           <Text
             style={[
               styles.navButtonText,
-              currentIndex === cards.length - 1 && styles.navButtonTextDisabled,
-            ]}
+              currentIndex === cards.length - 1 ? styles.navButtonTextDisabled : null,
+            ].filter(Boolean)}
           >
             Next →
           </Text>

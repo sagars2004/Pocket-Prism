@@ -1,0 +1,10 @@
+# Convex Integration
+# 
+# Future integration for Convex database.
+# See docs/FUTURE_INTEGRATIONS.md for implementation plan.
+#
+# Planned files:
+# - client.ts - Convex client setup
+# - hooks.ts - Custom React hooks for Convex
+# - mutations.ts - Mutation wrappers
+# - queries.ts - Query wrappers

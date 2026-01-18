@@ -21,7 +21,16 @@ export async function saveUserData(userData: UserData): Promise<void> {
 export async function loadUserData(): Promise<UserData | null> {
   try {
     const data = await AsyncStorage.getItem(USER_DATA_KEY);
-    return data ? JSON.parse(data) : null;
+    if (!data) return null;
+    
+    const parsed: any = JSON.parse(data);
+    
+    // Ensure onboardingComplete is a boolean (not a string from corrupted data)
+    if (parsed && typeof parsed.onboardingComplete !== 'boolean') {
+      parsed.onboardingComplete = parsed.onboardingComplete === true || parsed.onboardingComplete === 'true';
+    }
+    
+    return parsed;
   } catch (error) {
     console.error('Error loading user data:', error);
     return null;

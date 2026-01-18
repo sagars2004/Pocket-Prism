@@ -1,0 +1,9 @@
+# Capacitor Integration
+#
+# Future integration for Capacitor native capabilities.
+# See docs/FUTURE_INTEGRATIONS.md for implementation plan.
+#
+# Planned files:
+# - plugins.ts - Capacitor plugin wrappers
+# - native.ts - Native feature abstractions
+# - config.ts - Capacitor configuration helpers

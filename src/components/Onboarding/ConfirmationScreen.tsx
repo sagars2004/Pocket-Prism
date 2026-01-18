@@ -71,19 +71,23 @@ export function ConfirmationScreen({ onComplete, onBack }: ConfirmationScreenPro
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>Pay Frequency:</Text>
               <Text style={styles.summaryValue}>
-                {onboardingData.salary.payFrequency?.charAt(0).toUpperCase() +
-                  onboardingData.salary.payFrequency?.slice(1).replace(/([A-Z])/g, ' $1')}
+                {onboardingData.salary.payFrequency
+                  ? onboardingData.salary.payFrequency.charAt(0).toUpperCase() +
+                    onboardingData.salary.payFrequency.slice(1).replace(/([A-Z])/g, ' $1')
+                  : 'Not set'}
               </Text>
             </View>
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>State:</Text>
-              <Text style={styles.summaryValue}>{onboardingData.salary.state}</Text>
+              <Text style={styles.summaryValue}>{onboardingData.salary.state || 'Not set'}</Text>
             </View>
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>Living Situation:</Text>
               <Text style={styles.summaryValue}>
-                {onboardingData.expenses.livingSituation?.charAt(0).toUpperCase() +
-                  onboardingData.expenses.livingSituation?.slice(1)}
+                {onboardingData.expenses.livingSituation
+                  ? onboardingData.expenses.livingSituation.charAt(0).toUpperCase() +
+                    onboardingData.expenses.livingSituation.slice(1)
+                  : 'Not set'}
               </Text>
             </View>
           </View>

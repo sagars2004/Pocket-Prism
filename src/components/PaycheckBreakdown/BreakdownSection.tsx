@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { Card } from '../shared/Card';
 import { formatCurrency } from '../../utils/formatters';
 import { colors } from '../../theme/colors';
@@ -19,7 +19,7 @@ export function BreakdownSection({
   description,
   variant = 'default',
 }: BreakdownSectionProps) {
-  const getVariantStyles = () => {
+  const getVariantStyles = (): { container?: ViewStyle; amount?: TextStyle } => {
     switch (variant) {
       case 'primary':
         return {
@@ -32,23 +32,30 @@ export function BreakdownSection({
           amount: styles.amountEmphasis,
         };
       default:
-        return {
-          container: {},
-          amount: {},
-        };
+        return {};
     }
   };
 
   const variantStyles = getVariantStyles();
 
+  const cardStyles: ViewStyle[] = [styles.section];
+  if (variantStyles.container) {
+    cardStyles.push(variantStyles.container);
+  }
+
+  const amountStyles: TextStyle[] = [styles.amount];
+  if (variantStyles.amount) {
+    amountStyles.push(variantStyles.amount);
+  }
+
   return (
-    <Card style={[styles.section, variantStyles.container]}>
+    <Card style={cardStyles}>
       <View style={styles.row}>
         <View style={styles.labelContainer}>
           <Text style={styles.label}>{label}</Text>
           {description && <Text style={styles.description}>{description}</Text>}
         </View>
-        <Text style={[styles.amount, variantStyles.amount]}>{formatCurrency(amount)}</Text>
+        <Text style={amountStyles}>{formatCurrency(amount)}</Text>
       </View>
     </Card>
   );
