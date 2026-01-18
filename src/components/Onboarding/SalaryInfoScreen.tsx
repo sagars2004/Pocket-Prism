@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '../shared/Button';
 import { Input } from '../shared/Input';
+import { Picker } from '../shared/Picker';
 import { ProgressIndicator } from './ProgressIndicator';
 import { useOnboarding } from '../../context/OnboardingContext';
 import { PayFrequency } from '../../types/user';
@@ -87,40 +87,33 @@ export function SalaryInfoScreen({ onNext, onBack }: SalaryInfoScreenProps) {
             error={error}
           />
 
-          <View style={styles.pickerContainer}>
-            <Text style={styles.label}>Pay Frequency</Text>
-            <View style={styles.pickerWrapper}>
-              <Picker
-                selectedValue={payFrequency}
-                onValueChange={(value) => setPayFrequency(value)}
-                style={styles.picker}
-              >
-                <Picker.Item label="Monthly" value="monthly" />
-                <Picker.Item label="Semi-Monthly" value="semimonthly" />
-                <Picker.Item label="Bi-Weekly" value="biweekly" />
-                <Picker.Item label="Weekly" value="weekly" />
-              </Picker>
-            </View>
-          </View>
+          <Picker
+            label="Pay Frequency"
+            selectedValue={payFrequency}
+            onValueChange={(value) => setPayFrequency(value as PayFrequency)}
+            items={[
+              { label: 'Monthly', value: 'monthly' },
+              { label: 'Semi-Monthly', value: 'semimonthly' },
+              { label: 'Bi-Weekly', value: 'biweekly' },
+              { label: 'Weekly', value: 'weekly' },
+            ]}
+            placeholder="Select pay frequency"
+          />
 
-          <View style={styles.pickerContainer}>
-            <Text style={styles.label}>State</Text>
-            <View style={styles.pickerWrapper}>
-              <Picker
-                selectedValue={state}
-                onValueChange={(value) => {
-                  setState(value);
-                  setError('');
-                }}
-                style={styles.picker}
-              >
-                <Picker.Item label="Select a state" value="" />
-                {US_STATES.map((s) => (
-                  <Picker.Item key={s} label={s} value={s} />
-                ))}
-              </Picker>
-            </View>
-          </View>
+          <Picker
+            label="State"
+            selectedValue={state}
+            onValueChange={(value) => {
+              setState(value);
+              setError('');
+            }}
+            items={[
+              { label: 'Select a state', value: '' },
+              ...US_STATES.map((s) => ({ label: s, value: s })),
+            ]}
+            placeholder="Select your state"
+            error={error && !state ? error : undefined}
+          />
         </View>
 
         <View style={styles.buttonContainer}>
@@ -158,26 +151,6 @@ const styles = StyleSheet.create({
     ...typography.body,
     color: colors.textSecondary,
     marginBottom: spacing.xl,
-  },
-  label: {
-    ...typography.bodySmall,
-    color: colors.text,
-    marginBottom: spacing.sm,
-    fontWeight: '500',
-  },
-  pickerContainer: {
-    marginBottom: spacing.md,
-  },
-  pickerWrapper: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 8,
-    backgroundColor: colors.surface,
-    overflow: 'hidden',
-  },
-  picker: {
-    height: spacing.touchTarget,
-    color: colors.text,
   },
   buttonContainer: {
     flexDirection: 'row',
