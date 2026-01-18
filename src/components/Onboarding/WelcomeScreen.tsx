@@ -31,6 +31,9 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(20)).current;
   
+  // Track if logo animation is running to prevent duplicate starts
+  const logoAnimationRef = useRef<Animated.CompositeAnimation | null>(null);
+  
   // Create bubbles - small circular particles that drift left with random spawning
   // Bubbles appear strictly above the title and below all text content
   const [bubbles] = useState<Bubble[]>(() => {
@@ -117,6 +120,11 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
   });
 
   useEffect(() => {
+    // Reset animation values when component mounts/remounts
+    translateY.setValue(0);
+    fadeAnim.setValue(0);
+    slideAnim.setValue(20);
+    
     // Create a continuous floating/bobbing animation with sinusoidal motion
     // Using easing to approximate smooth sine wave movement
     const createFloatAnimation = () => {
@@ -138,8 +146,14 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
       );
     };
 
+    // Stop any existing animation before starting a new one
+    if (logoAnimationRef.current) {
+      logoAnimationRef.current.stop();
+    }
+    
     const logoAnimation = createFloatAnimation();
     logoAnimation.start();
+    logoAnimationRef.current = logoAnimation;
 
     // Entrance animations for text
     Animated.parallel([
@@ -204,10 +218,13 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
     bubbleAnimations.forEach((anim: Animated.CompositeAnimation) => anim.start());
 
     return () => {
-      logoAnimation.stop();
+      if (logoAnimationRef.current) {
+        logoAnimationRef.current.stop();
+        logoAnimationRef.current = null;
+      }
       bubbleAnimations.forEach((anim: Animated.CompositeAnimation) => anim.stop());
     };
-  }, [translateY, bubbles, fadeAnim, slideAnim]);
+  }, [translateY, bubbles, fadeAnim, slideAnim, isDark]); // Add isDark to dependencies to restart on theme change
 
   const styles = StyleSheet.create({
     container: {
@@ -244,17 +261,20 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
       alignSelf: 'center',
       width: '100%',
       zIndex: 10, // Ensure logo is above bubbles
+      minHeight: 150, // Ensure container always has space
     },
     logoWrapper: {
       width: 150,
       height: 150,
       alignItems: 'center',
       justifyContent: 'center',
+      position: 'relative', // Ensure wrapper maintains space
     },
     logo: {
       width: 150,
       height: 150,
       alignSelf: 'center',
+      position: 'absolute', // Ensure logo always renders
     },
     textContainer: {
       alignItems: 'center',
@@ -358,6 +378,7 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
                 transform: [{ translateY }],
               },
             ]}
+            key={`logo-${isDark}`} // Force re-render on theme change
           >
             <View style={styles.logoWrapper}>
               <Image
@@ -368,6 +389,12 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
                 }
                 style={styles.logo}
                 resizeMode="contain"
+                onError={(error) => {
+                  console.error('Logo image failed to load:', error);
+                }}
+                onLoad={() => {
+                  // Ensure logo is visible after load
+                }}
               />
             </View>
           </Animated.View>
@@ -415,7 +442,7 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
             </View>
             
             <Text style={styles.description}>
-              To make this as fluid as possible, let's learn a bit about your situation!
+              Let's curate your personal tank and help your decisions flow smoothly!
             </Text>
           </Animated.View>
         </View>

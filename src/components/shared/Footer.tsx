@@ -9,11 +9,12 @@ import { spacing } from '../../theme/spacing';
 
 interface FooterProps {
   onHomePress?: () => void;
+  onPlanPress?: () => void;
   onSettingsPress?: () => void;
   navigation?: any; // For navigation to settings
 }
 
-export function Footer({ onHomePress, onSettingsPress, navigation }: FooterProps) {
+export function Footer({ onHomePress, onPlanPress, onSettingsPress, navigation }: FooterProps) {
   const { currentColors } = useTheme();
   const { clearUserData } = useUser();
   const { resetOnboarding } = useOnboarding();
@@ -23,6 +24,14 @@ export function Footer({ onHomePress, onSettingsPress, navigation }: FooterProps
       navigation.navigate('Settings');
     } else if (onSettingsPress) {
       onSettingsPress();
+    }
+  };
+
+  const handlePlanPress = () => {
+    if (navigation) {
+      navigation.navigate('Plan');
+    } else if (onPlanPress) {
+      onPlanPress();
     }
   };
 
@@ -116,6 +125,20 @@ export function Footer({ onHomePress, onSettingsPress, navigation }: FooterProps
           style={styles.icon}
         />
         <Text style={styles.label}>Home</Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+        style={styles.iconButton}
+        onPress={handlePlanPress}
+        activeOpacity={0.7}
+      >
+        <MaterialCommunityIcons
+          name="chart-timeline-variant"
+          size={28}
+          color={currentColors.text}
+          style={styles.icon}
+        />
+        <Text style={styles.label}>Plan</Text>
       </TouchableOpacity>
       
       <TouchableOpacity

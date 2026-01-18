@@ -55,33 +55,49 @@ const EXPERIENCE_LEVELS = [
 export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScreenProps) {
   const { onboardingData, updateSalary } = useOnboarding();
   const { currentColors } = useTheme();
-  const [hourlyRate, setHourlyRate] = useState(
-    onboardingData.salary.annualSalary ? (onboardingData.salary.annualSalary / 2080).toFixed(2) : ''
-  );
-  const [hoursPerWeek, setHoursPerWeek] = useState('40');
   const [payFrequency, setPayFrequency] = useState<PayFrequency>(
     onboardingData.salary.payFrequency || 'monthly'
   );
+  const [payAmount, setPayAmount] = useState(
+    onboardingData.salary.annualSalary 
+      ? (onboardingData.salary.annualSalary / getPayPeriodsPerYear(onboardingData.salary.payFrequency || 'monthly')).toFixed(2)
+      : ''
+  );
   const [state, setState] = useState(onboardingData.salary.state || '');
   const [city, setCity] = useState('');
-  const [industry, setIndustry] = useState('');
-  const [experienceLevel, setExperienceLevel] = useState('');
   const [error, setError] = useState('');
   const [isLocating, setIsLocating] = useState(false);
+  
+  // Helper to get pay periods per year based on frequency
+  function getPayPeriodsPerYear(frequency: PayFrequency): number {
+    switch (frequency) {
+      case 'weekly': return 52;
+      case 'biweekly': return 26;
+      case 'semimonthly': return 24;
+      case 'monthly': return 12;
+      default: return 12;
+    }
+  }
 
   // Reset local state when onboarding context is cleared
   useEffect(() => {
     if (!onboardingData.salary.annualSalary && !onboardingData.salary.state) {
-      setHourlyRate('');
-      setHoursPerWeek('40');
+      setPayAmount('');
       setPayFrequency('monthly');
       setState('');
       setCity('');
-      setIndustry('');
-      setExperienceLevel('');
       setError('');
     }
   }, [onboardingData.salary]);
+  
+  // Update pay amount when frequency changes to recalculate annual equivalent
+  useEffect(() => {
+    if (payAmount && onboardingData.salary.annualSalary) {
+      const currentAnnual = onboardingData.salary.annualSalary;
+      const newPayPerPeriod = currentAnnual / getPayPeriodsPerYear(payFrequency);
+      setPayAmount(newPayPerPeriod.toFixed(2));
+    }
+  }, [payFrequency]);
 
   const handleLocateMe = async () => {
     try {
@@ -183,11 +199,10 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
   };
 
   const handleNext = () => {
-    const hourlyNum = parseFloat(hourlyRate.replace(/[^0-9.]/g, ''));
-    const hoursNum = parseFloat(hoursPerWeek.replace(/[^0-9.]/g, '')) || 40;
+    const payAmountNum = parseFloat(payAmount.replace(/[^0-9.]/g, ''));
     
-    if (!hourlyRate || isNaN(hourlyNum) || hourlyNum <= 0) {
-      setError('Please enter a valid hourly rate');
+    if (!payAmount || isNaN(payAmountNum) || payAmountNum <= 0) {
+      setError('Please enter a valid paycheck amount');
       return;
     }
 
@@ -196,8 +211,13 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
       return;
     }
 
-    // Calculate annual salary from hourly rate
-    const annualSalary = hourlyNum * hoursNum * 52; // hourly rate * hours/week * 52 weeks
+    if (!payFrequency) {
+      setError('Please select your pay frequency');
+      return;
+    }
+
+    // Calculate annual salary from paycheck amount and frequency
+    const annualSalary = payAmountNum * getPayPeriodsPerYear(payFrequency);
 
     updateSalary({
       annualSalary,
@@ -297,55 +317,41 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.content}>
-          <Text style={styles.title}>Tell us about your work</Text>
+          <Text style={styles.title}>Tell us about your paycheck</Text>
           <Text style={styles.subtitle}>
             We'll use this to calculate your take-home pay and show you personalized insights.
           </Text>
 
-          <TextInput
-            label="Hourly Rate"
-            placeholder="$25.00"
-            mode="outlined"
-            keyboardType="numeric"
-            value={hourlyRate}
-            onChangeText={(text) => {
-              setHourlyRate(text);
+          <Picker
+            label="Pay Frequency"
+            selectedValue={payFrequency}
+            onValueChange={(value) => {
+              setPayFrequency(value as PayFrequency);
               setError('');
             }}
-            error={!!error && !hourlyRate}
-            style={styles.input}
+            items={[
+              { label: 'Monthly', value: 'monthly' },
+              { label: 'Semi-Monthly', value: 'semimonthly' },
+              { label: 'Bi-Weekly', value: 'biweekly' },
+              { label: 'Weekly', value: 'weekly' },
+            ]}
+            placeholder="Select pay frequency"
+            error={!!error && !payFrequency}
           />
 
           <TextInput
-            label="Hours Per Week (optional)"
-            placeholder="40"
+            label={`Paycheck Amount (${payFrequency === 'weekly' ? 'per week' : payFrequency === 'biweekly' ? 'every 2 weeks' : payFrequency === 'semimonthly' ? 'twice per month' : 'per month'})`}
+            placeholder="$3000.00"
             mode="outlined"
             keyboardType="numeric"
-            value={hoursPerWeek}
-            onChangeText={setHoursPerWeek}
+            value={payAmount}
+            onChangeText={(text) => {
+              setPayAmount(text);
+              setError('');
+            }}
+            error={!!error && !payAmount}
             style={styles.input}
-          />
-
-          <Picker
-            label="Industry"
-            selectedValue={industry}
-            onValueChange={setIndustry}
-            items={[
-              { label: 'Select your industry', value: '' },
-              ...INDUSTRIES.map((ind) => ({ label: ind, value: ind })),
-            ]}
-            placeholder="Select your industry"
-          />
-
-          <Picker
-            label="Years of Experience"
-            selectedValue={experienceLevel}
-            onValueChange={setExperienceLevel}
-            items={[
-              { label: 'Select experience level', value: '' },
-              ...EXPERIENCE_LEVELS.map((exp) => ({ label: exp.label, value: exp.value })),
-            ]}
-            placeholder="Select experience level"
+            left={<TextInput.Affix text="$" />}
           />
 
           <View style={styles.locationContainer}>
@@ -390,19 +396,6 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
               </Text>
             </TouchableOpacity>
           </View>
-
-          <Picker
-            label="Pay Frequency"
-            selectedValue={payFrequency}
-            onValueChange={(value) => setPayFrequency(value as PayFrequency)}
-            items={[
-              { label: 'Monthly', value: 'monthly' },
-              { label: 'Semi-Monthly', value: 'semimonthly' },
-              { label: 'Bi-Weekly', value: 'biweekly' },
-              { label: 'Weekly', value: 'weekly' },
-            ]}
-            placeholder="Select pay frequency"
-          />
 
           {error && <Text style={styles.errorText}>{error}</Text>}
         </View>

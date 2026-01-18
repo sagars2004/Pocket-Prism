@@ -9,6 +9,7 @@ import { DashboardScreen } from '../components/Dashboard/DashboardScreen';
 import { TradeoffCardsScreen } from '../components/Tradeoffs/TradeoffCardsScreen';
 import { BreakdownScreen } from '../components/PaycheckBreakdown/BreakdownScreen';
 import { SettingsScreen } from '../components/Settings/SettingsScreen';
+import { PlanScreen } from '../components/Plan/PlanScreen';
 import { useUser } from '../context/UserContext';
 
 export type RootStackParamList = {
@@ -20,6 +21,7 @@ export type RootStackParamList = {
   Tradeoffs: undefined;
   Breakdown: undefined;
   Settings: undefined;
+  Plan: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -124,6 +126,22 @@ export function AppNavigator() {
                   routes: [{ name: 'Dashboard' }],
                 });
               }}
+            />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="Plan">
+          {(props) => (
+            <PlanScreen
+              {...props}
+              navigation={props.navigation}
+              onBack={() => props.navigation.goBack()}
+              onNavigateToHome={() => {
+                props.navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Dashboard' }],
+                });
+              }}
+              onNavigateToSettings={() => props.navigation.navigate('Settings')}
             />
           )}
         </Stack.Screen>
