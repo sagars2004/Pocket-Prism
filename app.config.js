@@ -1,10 +1,5 @@
 /**
  * Expo Configuration
- * 
- * This file reads environment variables from .env file
- * Make sure you have a .env file with:
- * - WORKOS_CLIENT_ID=client_xxxxx
- * - EXPO_PUBLIC_API_URL=https://your-api.com
  */
 
 require('dotenv').config();
@@ -50,10 +45,5 @@ module.exports = {
       favicon: './assets/favicon.png',
     },
     scheme: 'finsh',
-    extra: {
-      // Read from .env file or use defaults
-      workosClientId: process.env.WORKOS_CLIENT_ID || '',
-      apiUrl: process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000',
-    },
   },
 };

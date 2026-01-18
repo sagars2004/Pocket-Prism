@@ -10,8 +10,6 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface WelcomeScreenProps {
   onNext: () => void;
-  onSignUp?: () => void;
-  onLogIn?: () => void;
 }
 
 interface Bubble {
@@ -24,7 +22,7 @@ interface Bubble {
   delay: number;
 }
 
-export function WelcomeScreen({ onNext, onSignUp, onLogIn }: WelcomeScreenProps) {
+export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
   const { currentColors, isDark } = useTheme();
   const translateY = useRef(new Animated.Value(0)).current;
   
@@ -329,44 +327,17 @@ export function WelcomeScreen({ onNext, onSignUp, onLogIn }: WelcomeScreenProps)
           </Text>
         </View>
         <View style={styles.buttonContainer}>
-          {onSignUp && onLogIn ? (
-            <>
-              <Button 
-                mode="contained" 
-                onPress={onSignUp}
-                buttonColor={currentColors.primary}
-                textColor={currentColors.surface}
-                style={styles.button}
-                contentStyle={styles.buttonContent}
-                labelStyle={styles.buttonLabel}
-              >
-                Sign Up
-              </Button>
-              <Button 
-                mode="outlined" 
-                onPress={onLogIn}
-                buttonColor={currentColors.surface}
-                textColor={currentColors.primary}
-                style={styles.button}
-                contentStyle={styles.buttonContent}
-                labelStyle={styles.buttonLabel}
-              >
-                Log In
-              </Button>
-            </>
-          ) : (
-            <Button 
-              mode="contained" 
-              onPress={onNext}
-              buttonColor={currentColors.primary}
-              textColor={currentColors.surface}
-              style={styles.button}
-              contentStyle={styles.buttonContent}
-              labelStyle={styles.buttonLabel}
-            >
-              Get Started
-            </Button>
-          )}
+          <Button 
+            mode="contained" 
+            onPress={onNext}
+            buttonColor={currentColors.primary}
+            textColor={currentColors.surface}
+            style={styles.button}
+            contentStyle={styles.buttonContent}
+            labelStyle={styles.buttonLabel}
+          >
+            Get Started
+          </Button>
         </View>
       </ScrollView>
     </SafeAreaView>
