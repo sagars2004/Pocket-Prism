@@ -191,7 +191,7 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
           </Card>
 
           <Text style={styles.message}>
-            Ready to see your paycheck breakdown?
+            Ready to see your Finsh tank?
           </Text>
         </View>
 

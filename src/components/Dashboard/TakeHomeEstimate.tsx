@@ -5,13 +5,15 @@ import { formatCurrency } from '../../utils/formatters';
 import { useTheme } from '../../context/ThemeContext';
 import { typography } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
+import { PaycheckBreakdown } from '../../types/paycheck';
 
 interface TakeHomeEstimateProps {
-  takeHomePay: number;
+  breakdown: PaycheckBreakdown;
   payFrequency: string;
 }
 
-export function TakeHomeEstimate({ takeHomePay, payFrequency }: TakeHomeEstimateProps) {
+export function TakeHomeEstimate({ breakdown, payFrequency }: TakeHomeEstimateProps) {
+  const { takeHomePay, grossPay } = breakdown;
   const { currentColors } = useTheme();
 
   const styles = StyleSheet.create({
@@ -23,12 +25,29 @@ export function TakeHomeEstimate({ takeHomePay, payFrequency }: TakeHomeEstimate
     cardContent: {
       padding: spacing.lg,
     },
+    headerRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: spacing.xs,
+    },
     label: {
       ...typography.bodySmall,
       color: currentColors.textSecondary,
-      marginBottom: spacing.xs,
       textTransform: 'uppercase',
       letterSpacing: 0.5,
+      fontWeight: '600',
+    },
+    grossPayLabel: {
+      ...typography.bodySmall,
+      color: currentColors.textSecondary,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+      fontWeight: '600',
+    },
+    grossPayValue: {
+      ...typography.bodySmall,
+      color: currentColors.textSecondary,
       fontWeight: '600',
     },
     amount: {
@@ -57,14 +76,20 @@ export function TakeHomeEstimate({ takeHomePay, payFrequency }: TakeHomeEstimate
   });
 
   return (
-    <Card style={styles.card} elevation={2}>
+    <Card style={styles.card} elevation={3}>
       <Card.Content style={styles.cardContent}>
-        <Text style={styles.label}>Take-Home Pay</Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.label}>Take-Home Pay</Text>
+          <View style={{ alignItems: 'flex-end' }}>
+            <Text style={styles.grossPayLabel}>Gross Pay</Text>
+            <Text style={styles.grossPayValue}>{formatCurrency(grossPay)}</Text>
+          </View>
+        </View>
         <Text style={styles.amount}>{formatCurrency(takeHomePay)}</Text>
         <Text style={styles.frequency}>Per {payFrequency.toLowerCase()}</Text>
         <View style={styles.noteContainer}>
           <Text style={styles.note}>
-            💡 This is an estimate. Your actual take-home may vary based on your specific deductions.
+            NOTE: This is an estimate. Your actual take-home may vary based on your specific deductions.
           </Text>
         </View>
       </Card.Content>

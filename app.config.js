@@ -8,7 +8,7 @@ module.exports = {
   expo: {
     name: 'Finsh',
     slug: 'finsh',
-    version: '1.0.0',
+    
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',

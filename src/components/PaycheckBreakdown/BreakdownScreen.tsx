@@ -133,7 +133,7 @@ export function BreakdownScreen({ onBack, navigation }: BreakdownScreenProps) {
         <Card style={styles.infoContainer}>
           <Card.Content>
             <Text style={styles.infoText}>
-              You're early — here's how to use this info
+              You're early- here's how to use this info:
             </Text>
             <Text style={styles.infoSubtext}>
               This breakdown shows where your money goes before it reaches your bank account.

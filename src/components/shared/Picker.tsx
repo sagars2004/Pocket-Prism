@@ -58,6 +58,14 @@ export function Picker({
         borderRadius: 8,
         backgroundColor: currentColors.surface,
         overflow: 'hidden',
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 2,
       },
       pickerWrapperError: {
         borderColor: currentColors.error,
@@ -118,6 +126,14 @@ export function Picker({
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 3,
+      elevation: 2,
     },
     pickerButtonError: {
       borderColor: currentColors.error,

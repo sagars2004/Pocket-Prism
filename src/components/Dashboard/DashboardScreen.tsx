@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Card } from 'react-native-paper';
 import { Footer } from '../shared/Footer';
 import { Greeting } from './Greeting';
 import { TakeHomeEstimate } from './TakeHomeEstimate';
@@ -52,6 +53,30 @@ export function DashboardScreen({ onViewTradeoffs, onViewBreakdown, navigation }
     footerContainer: {
       backgroundColor: currentColors.surface,
     },
+    infoBox: {
+      marginTop: spacing.lg,
+      backgroundColor: '#4A4A4A',
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: currentColors.borderLight,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    infoBoxContent: {
+      padding: spacing.md,
+    },
+    infoText: {
+      ...typography.body,
+      color: '#FFFFFF',
+      lineHeight: 20,
+      textAlign: 'center',
+    },
   });
 
   if (!userData || !paycheckData) {
@@ -72,14 +97,23 @@ export function DashboardScreen({ onViewTradeoffs, onViewBreakdown, navigation }
       >
         <Greeting name={userData.name} />
         <TakeHomeEstimate
-          takeHomePay={paycheckData.takeHomePay}
+          breakdown={paycheckData}
           payFrequency={payFrequencyLabel}
         />
+        
         <ActionButtons
           onViewTradeoffs={onViewTradeoffs}
           onViewBreakdown={onViewBreakdown}
         />
+        <View style={styles.infoBox}>
+          <View style={styles.infoBoxContent}>
+            <Text style={styles.infoText}>
+              To view more insights and plan your long-term future, select the Plan tab from the navigation below.
+            </Text>
+          </View>
+        </View>
       </ScrollView>
+      
       <SafeAreaView edges={['bottom']} style={styles.footerContainer}>
         <Footer navigation={navigation} />
       </SafeAreaView>
