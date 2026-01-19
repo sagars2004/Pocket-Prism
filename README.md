@@ -1,10 +1,10 @@
-# PocketPrism
+# Finsh
 
 A mobile-first iOS app built with Expo/React Native + TypeScript that helps new graduates and early-career professionals understand their first paycheck.
 
 ## Overview
 
-PocketPrism translates salary, taxes, and benefits into plain English and helps users make early financial decisions confidently. The app features interactive Tradeoff Cards comparing options like living alone vs. roommates, saving vs. spending, and loan repayment strategies.
+Finsh translates salary, taxes, and benefits into plain English and helps users make early financial decisions confidently. The app features interactive Tradeoff Cards comparing options like living alone vs. roommates, saving vs. spending, and loan repayment strategies.
 
 ## Features
 
@@ -130,7 +130,7 @@ These are clearly marked in the code and ready for future implementation with re
 ### iOS Configuration
 
 The app is configured for iOS deployment:
-- Bundle ID: `com.pocketprism.app`
+- Bundle ID: `com.finsh.app`
 - Portrait orientation only
 - iPhone-focused (tablet support disabled)
 
