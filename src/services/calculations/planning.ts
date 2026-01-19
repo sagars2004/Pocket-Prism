@@ -137,6 +137,7 @@ export function calculateTradeoffComparisons(
   const baseBreakdown = estimateTakeHome(baseSalaryInput);
   const monthlyNetBase = baseBreakdown.takeHomePay * getPayPeriodsPerMonth(baseSalaryInput.payFrequency);
   const annualNetBase = monthlyNetBase * 12;
+  const payPeriodsPerMonth = getPayPeriodsPerMonth(baseSalaryInput.payFrequency);
   
   const comparisons: TradeoffComparison[] = [
     {
@@ -147,7 +148,6 @@ export function calculateTradeoffComparisons(
     },
   ];
   
-  // Example tradeoff scenarios (simplified)
   // Living alone vs roommates
   const roommateSavings = monthlyNetBase * 0.25; // ~25% savings on housing
   comparisons.push({
@@ -155,28 +155,88 @@ export function calculateTradeoffComparisons(
     monthlyNet: monthlyNetBase + roommateSavings,
     annualNet: (monthlyNetBase + roommateSavings) * 12,
     monthlySavings: roommateSavings,
-    description: 'Save on housing costs',
+    description: 'Split rent and utilities with roommates',
+  });
+  
+  // Transportation: Own car vs public transit
+  const carCosts = 650; // Car payment + insurance + gas
+  const transitCosts = 180; // Monthly transit pass + occasional rideshare
+  const transportationSavings = carCosts - transitCosts;
+  comparisons.push({
+    scenario: 'Public Transit Instead of Car',
+    monthlyNet: monthlyNetBase + transportationSavings,
+    annualNet: (monthlyNetBase + transportationSavings) * 12,
+    monthlySavings: transportationSavings,
+    description: 'Use public transit and rideshare instead of owning a car',
+  });
+  
+  // Dining: Cook at home vs eat out frequently
+  const diningOutCosts = 800; // Restaurants 4-5 times per week
+  const homeCookingCosts = 350; // Home cooking with occasional takeout
+  const diningSavings = diningOutCosts - homeCookingCosts;
+  comparisons.push({
+    scenario: 'Cook at Home More',
+    monthlyNet: monthlyNetBase + diningSavings,
+    annualNet: (monthlyNetBase + diningSavings) * 12,
+    monthlySavings: diningSavings,
+    description: 'Cook at home instead of eating out frequently',
+  });
+  
+  // Location: Suburban vs city center
+  const cityCenterRent = 2200;
+  const suburbanRent = 1400;
+  const locationSavings = cityCenterRent - suburbanRent;
+  comparisons.push({
+    scenario: 'Suburban Apartment',
+    monthlyNet: monthlyNetBase + locationSavings,
+    annualNet: (monthlyNetBase + locationSavings) * 12,
+    monthlySavings: locationSavings,
+    description: 'Move to suburban area for lower rent',
   });
   
   // Reduced benefits scenario
   const reducedBenefits = baseBreakdown.benefits.total * 0.5; // 50% reduction
-  const reducedBenefitsMonthly = reducedBenefits * getPayPeriodsPerMonth(baseSalaryInput.payFrequency);
+  const reducedBenefitsMonthly = reducedBenefits * payPeriodsPerMonth;
   comparisons.push({
     scenario: 'Minimal Benefits',
     monthlyNet: monthlyNetBase + reducedBenefitsMonthly,
     annualNet: (monthlyNetBase + reducedBenefitsMonthly) * 12,
     monthlySavings: reducedBenefitsMonthly,
-    description: 'Lower benefit deductions',
+    description: 'Lower benefit deductions (if available)',
   });
   
-  // Higher savings rate
+  // Entertainment: Selective subscriptions
+  const multipleSubscriptions = 180; // Multiple streaming + events
+  const selectiveSubscriptions = 45; // One streaming service
+  const entertainmentSavings = multipleSubscriptions - selectiveSubscriptions;
+  comparisons.push({
+    scenario: 'Selective Subscriptions',
+    monthlyNet: monthlyNetBase + entertainmentSavings,
+    annualNet: (monthlyNetBase + entertainmentSavings) * 12,
+    monthlySavings: entertainmentSavings,
+    description: 'Reduce streaming services and entertainment spending',
+  });
+  
+  // Shopping: Quality basics vs fast fashion
+  const fastFashionCosts = 200;
+  const qualityBasicsCosts = 80;
+  const shoppingSavings = fastFashionCosts - qualityBasicsCosts;
+  comparisons.push({
+    scenario: 'Quality Basics & Thrifting',
+    monthlyNet: monthlyNetBase + shoppingSavings,
+    annualNet: (monthlyNetBase + shoppingSavings) * 12,
+    monthlySavings: shoppingSavings,
+    description: 'Invest in quality items and thrift instead of fast fashion',
+  });
+  
+  // Aggressive savings
   const savingsIncrease = monthlyNetBase * 0.10; // 10% more saved
   comparisons.push({
     scenario: 'Aggressive Savings',
     monthlyNet: monthlyNetBase - savingsIncrease,
     annualNet: (monthlyNetBase - savingsIncrease) * 12,
     monthlySavings: -savingsIncrease,
-    description: 'Save 10% more monthly',
+    description: 'Save 10% more of your monthly income',
   });
   
   return comparisons;

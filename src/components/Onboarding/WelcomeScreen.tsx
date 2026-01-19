@@ -455,7 +455,7 @@ export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
           >
             <Text style={styles.title}>Welcome to Finsh</Text>
             <Text style={styles.subtitle}>
-              Understand your paycheck before it's in the bank, plan out where your money might go, and make smarter financial decisions from day one.
+              Understand your paycheck before it's in the bank, plan out where your money might go, and make smarter decisions from day one.
             </Text>
             
             {/* Feature highlights */}
@@ -487,7 +487,7 @@ export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
             </View>
             
             <Text style={styles.description}>
-              Let's curate your personal Finsh tank and make decisions flow effortlessly!
+              Curate your personal Finsh tank and make your financial currents flow effortlessly!
             </Text>
           </Animated.View>
         </View>

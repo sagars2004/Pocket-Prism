@@ -38,6 +38,7 @@ export function PlanScreen({ onBack, onNavigateToHome, onNavigateToSettings, nav
   const { currentColors, isDark } = useTheme();
   const { userData } = useUser();
   const [monthsToProject, setMonthsToProject] = useState('12');
+  const sliderValues = [3, 6, 9, 12];
   const [expenses, setExpenses] = useState<ExpenseItem[]>([
     { id: '1', name: 'Rent', amount: '' },
     { id: '2', name: 'Groceries', amount: '' },
@@ -128,6 +129,40 @@ export function PlanScreen({ onBack, onNavigateToHome, onNavigateToSettings, nav
     },
     controlItem: {
       flex: 1,
+    },
+    periodButtonsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      gap: spacing.sm,
+      marginTop: spacing.sm,
+    },
+    periodButton: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: spacing.md,
+      paddingHorizontal: spacing.sm,
+      borderRadius: 50,
+      borderWidth: 2,
+      borderColor: currentColors.border,
+      backgroundColor: currentColors.surface,
+    },
+    periodButtonActive: {
+      borderColor: isDark ? '#FFFFFF' : '#000000',
+      borderWidth: 3,
+      backgroundColor: isDark ? '#FFFFFF10' : '#00000010',
+    },
+    periodButtonText: {
+      ...typography.body,
+      color: currentColors.textSecondary,
+      fontSize: 18,
+      fontWeight: '700',
+      textAlign: 'center',
+    },
+    periodButtonTextActive: {
+      color: currentColors.text,
+      fontWeight: '700',
+      fontSize: 20,
     },
     chartContainer: {
       marginTop: spacing.md,
@@ -342,21 +377,31 @@ export function PlanScreen({ onBack, onNavigateToHome, onNavigateToSettings, nav
       >
         {/* Controls */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Projection Period</Text>
-          <View style={styles.controlsRow}>
-            <View style={styles.controlItem}>
-              <Picker
-                selectedValue={monthsToProject}
-                onValueChange={setMonthsToProject}
-                items={[
-                  { label: '3 months', value: '3' },
-                  { label: '6 months', value: '6' },
-                  { label: '9 months', value: '9' },
-                  { label: '12 months', value: '12' },
-                ]}
-                placeholder="Select period"
-              />
-            </View>
+          <Text style={styles.sectionTitle}>Projection Period (Months)</Text>
+          <View style={styles.periodButtonsContainer}>
+            {sliderValues.map((value) => {
+              const isSelected = parseInt(monthsToProject) === value;
+              return (
+                <TouchableOpacity
+                  key={value}
+                  onPress={() => setMonthsToProject(value.toString())}
+                  style={[
+                    styles.periodButton,
+                    isSelected && styles.periodButtonActive,
+                  ]}
+                  activeOpacity={0.7}
+                >
+                  <Text
+                    style={[
+                      styles.periodButtonText,
+                      isSelected && styles.periodButtonTextActive,
+                    ]}
+                  >
+                    {value}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
         </View>
 
@@ -414,7 +459,7 @@ export function PlanScreen({ onBack, onNavigateToHome, onNavigateToSettings, nav
                         }}
                         style={{ padding: spacing.sm, marginTop: spacing.xs }}
                       >
-                        <MaterialCommunityIcons name="delete-outline" size={24} color={currentColors.error} />
+                        <MaterialCommunityIcons name="delete-outline" size={24} color={isDark ? '#FFFFFF' : '#000000'} />
                       </TouchableOpacity>
                     )}
                   </View>

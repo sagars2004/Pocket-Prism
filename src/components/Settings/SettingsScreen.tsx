@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from 'react-native-paper';
 import { Footer } from '../shared/Footer';
@@ -197,6 +197,16 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
       textAlign: 'center',
       marginBottom: spacing.xs,
     },
+    logoContainer: {
+      alignItems: 'center',
+      marginTop: spacing.xs,
+      marginBottom: spacing.lg,
+    },
+    logo: {
+      width: 280,
+      height: 88,
+      resizeMode: 'contain',
+    },
     footerContainer: {
       backgroundColor: currentColors.surface,
     },
@@ -226,6 +236,19 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+        <View style={styles.logoContainer}>
+          <Image
+            source={
+              isDark
+                ? require('../../../assets/finsh_title_inverted.png')
+                : require('../../../assets/finsh_title.png')
+            }
+            style={styles.logo}
+            accessible
+            accessibilityLabel="Finsh logo"
+          />
+        </View>
+
         <Card style={[styles.card, { backgroundColor: currentColors.surface }]}>
           <Card.Content>
             <View style={styles.sectionHeader}>

@@ -22,11 +22,13 @@ interface TradeoffCardsScreenProps {
 
 export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenProps) {
   const { userData } = useUser();
-  const { currentColors } = useTheme();
+  const { currentColors, isDark } = useTheme();
   const [cards, setCards] = useState<TradeoffCardType[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const translateX = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(1)).current;
+  const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
   useEffect(() => {
     async function loadTradeoffs() {
@@ -48,20 +50,53 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
     loadTradeoffs();
   }, [userData]);
 
-  // Reset translateX when index changes
-  useEffect(() => {
-    translateX.setValue(0);
-  }, [currentIndex, translateX]);
+  // Animate card transition
+  const animateCardTransition = (direction: 'next' | 'prev', newIndex: number) => {
+    // Slide out current card
+    Animated.parallel([
+      Animated.timing(translateX, {
+        toValue: direction === 'next' ? -SCREEN_WIDTH : SCREEN_WIDTH,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 250,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      // Update index after slide out completes
+      setCurrentIndex(newIndex);
+      
+      // Reset position for slide in
+      translateX.setValue(direction === 'next' ? SCREEN_WIDTH : -SCREEN_WIDTH);
+      opacity.setValue(0);
+      
+      // Slide in new card
+      Animated.parallel([
+        Animated.timing(translateX, {
+          toValue: 0,
+          duration: 250,
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 250,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    });
+  };
 
   const handleNext = () => {
     if (currentIndex < cards.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      animateCardTransition('next', currentIndex + 1);
     }
   };
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      animateCardTransition('prev', currentIndex - 1);
     }
   };
 
@@ -82,21 +117,36 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
         } else if (translationX < 0 && currentIndex < cards.length - 1) {
           // Swipe left - go to next
           handleNext();
+        } else {
+          // Reset position if swipe didn't trigger navigation
+          Animated.spring(translateX, {
+            toValue: 0,
+            useNativeDriver: true,
+            tension: 50,
+            friction: 7,
+          }).start();
         }
+      } else {
+        // Reset position if swipe wasn't strong enough
+        Animated.spring(translateX, {
+          toValue: 0,
+          useNativeDriver: true,
+          tension: 50,
+          friction: 7,
+        }).start();
       }
-
-      // Reset position
-      Animated.spring(translateX, {
-        toValue: 0,
-        useNativeDriver: true,
-        tension: 50,
-        friction: 7,
-      }).start();
     }
   };
 
+  // Reset animation values when index changes externally
+  useEffect(() => {
+    translateX.setValue(0);
+    opacity.setValue(1);
+  }, [currentIndex]);
+
   const cardStyle = {
     transform: [{ translateX }],
+    opacity,
   };
 
   const styles = StyleSheet.create({
@@ -120,9 +170,18 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
       color: currentColors.text,
       fontWeight: '700',
     },
+    title: {
+      ...typography.h4,
+      color: currentColors.text,
+      fontWeight: '700',
+      flex: 1,
+      textAlign: 'center',
+    },
     counter: {
       ...typography.bodySmall,
       color: currentColors.textSecondary,
+      width: 60,
+      textAlign: 'right',
     },
     gestureContainer: {
       flex: 1,
@@ -134,16 +193,30 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
     navigationContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      padding: spacing.md,
+      marginTop: spacing.lg,
       gap: spacing.md,
-      borderTopWidth: 1,
-      borderTopColor: currentColors.borderLight,
     },
     navButton: {
       flex: 1,
+      borderRadius: 16,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.15,
+      shadowRadius: 4,
+      elevation: 3,
+    },
+    navButtonDisabled: {
+      opacity: 0.5,
     },
     navButtonContent: {
-      paddingVertical: spacing.sm,
+      paddingVertical: spacing.md,
+    },
+    navButtonLabel: {
+      ...typography.button,
+      fontSize: 20,
     },
     footer: {
       padding: spacing.md,
@@ -177,16 +250,6 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
       color: currentColors.textSecondary,
       textAlign: 'center',
     },
-    swipeHint: {
-      marginTop: spacing.md,
-      padding: spacing.sm,
-      alignItems: 'center',
-    },
-    swipeHintText: {
-      ...typography.caption,
-      color: currentColors.textTertiary,
-      fontStyle: 'italic',
-    },
     footerIconContainer: {
       backgroundColor: currentColors.surface,
     },
@@ -199,6 +262,8 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
           <TouchableOpacity onPress={onBack} style={styles.backButton}>
             <Text style={styles.backButtonText}>← Back</Text>
           </TouchableOpacity>
+          <Text style={styles.title}>What Ifs</Text>
+          <View style={{ width: 60 }} />
         </View>
         <View style={styles.loadingContainer}>
           <Text style={styles.loadingIcon}>💭</Text>
@@ -216,6 +281,8 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
           <TouchableOpacity onPress={onBack} style={styles.backButton}>
             <Text style={styles.backButtonText}>← Back</Text>
           </TouchableOpacity>
+          <Text style={styles.title}>What Ifs</Text>
+          <View style={{ width: 60 }} />
         </View>
         <View style={styles.loadingContainer}>
           <Text style={styles.loadingIcon}>😕</Text>
@@ -234,6 +301,7 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
           <Text style={styles.backButtonText}>← Back</Text>
         </TouchableOpacity>
+        <Text style={styles.title}>What Ifs</Text>
         <Text style={styles.counter}>
           {currentIndex + 1} of {cards.length}
         </Text>
@@ -257,43 +325,35 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
                 optionB={currentCard.optionB}
               />
             </Animated.View>
-            <View style={styles.swipeHint}>
-              <Text style={styles.swipeHintText}>
-                👆 Swipe left or right to navigate • Tap buttons below
-              </Text>
+            <View style={styles.navigationContainer}>
+              <Button
+                mode="contained"
+                onPress={handlePrevious}
+                disabled={currentIndex === 0}
+                buttonColor={isDark ? '#E5E5E5' : '#000000'}
+                textColor={isDark ? '#000000' : '#FFFFFF'}
+                style={[styles.navButton, currentIndex === 0 && styles.navButtonDisabled]}
+                contentStyle={styles.navButtonContent}
+                labelStyle={styles.navButtonLabel}
+              >
+                ← Previous
+              </Button>
+              <Button
+                mode="contained"
+                onPress={handleNext}
+                disabled={currentIndex === cards.length - 1}
+                buttonColor={isDark ? '#E5E5E5' : '#000000'}
+                textColor={isDark ? '#000000' : '#FFFFFF'}
+                style={[styles.navButton, currentIndex === cards.length - 1 && styles.navButtonDisabled]}
+                contentStyle={styles.navButtonContent}
+                labelStyle={styles.navButtonLabel}
+              >
+                Next →
+              </Button>
             </View>
           </ScrollView>
         </Animated.View>
       </PanGestureHandler>
-      <View style={styles.navigationContainer}>
-        <Button
-          mode="outlined"
-          onPress={handlePrevious}
-          disabled={currentIndex === 0}
-          buttonColor={currentColors.surface}
-          textColor={currentIndex === 0 ? currentColors.textTertiary : currentColors.text}
-          style={styles.navButton}
-          contentStyle={styles.navButtonContent}
-        >
-          ← Previous
-        </Button>
-        <Button
-          mode="outlined"
-          onPress={handleNext}
-          disabled={currentIndex === cards.length - 1}
-          buttonColor={currentColors.surface}
-          textColor={currentIndex === cards.length - 1 ? currentColors.textTertiary : currentColors.primary}
-          style={styles.navButton}
-          contentStyle={styles.navButtonContent}
-        >
-          Next →
-        </Button>
-      </View>
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Tradeoffs are based on your salary and expenses
-        </Text>
-      </View>
       <SafeAreaView edges={['bottom']} style={styles.footerIconContainer}>
         <Footer navigation={navigation} />
       </SafeAreaView>
