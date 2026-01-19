@@ -35,6 +35,9 @@ export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
   // Track if logo animation is running to prevent duplicate starts
   const logoAnimationRef = useRef<Animated.CompositeAnimation | null>(null);
   
+  // Track intro sequence state (4 seconds of logo only)
+  const [showIntro, setShowIntro] = useState(true);
+  
   // Create bubbles - small circular particles that drift left with random spawning
   // Bubbles appear strictly above the title and below all text content
   const [bubbles] = useState<Bubble[]>(() => {
@@ -121,10 +124,19 @@ export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
   });
 
   useEffect(() => {
+    // Reset intro state when component mounts/navigates back
+    setShowIntro(true);
+    
     // Reset animation values when component mounts/remounts
     translateY.setValue(0);
     fadeAnim.setValue(0);
     slideAnim.setValue(20);
+    
+    // Start intro timer: show only logo for 4 seconds
+    let introTimer: NodeJS.Timeout | null = null;
+    introTimer = setTimeout(() => {
+      setShowIntro(false);
+    }, 4000);
     
     // Create a continuous floating/bobbing animation with sinusoidal motion
     // Using easing to approximate smooth sine wave movement
@@ -239,6 +251,9 @@ export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
     bubbleAnimations.forEach((anim: Animated.CompositeAnimation) => anim.start());
 
     return () => {
+      if (introTimer) {
+        clearTimeout(introTimer);
+      }
       if (logoAnimationRef.current) {
         logoAnimationRef.current.stop();
         logoAnimationRef.current = null;
@@ -255,6 +270,12 @@ export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
     scrollContent: {
       flexGrow: 1,
       padding: spacing.lg,
+    },
+    introContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: currentColors.background,
     },
     content: {
       flex: 1,
@@ -466,7 +487,7 @@ export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
             </View>
             
             <Text style={styles.description}>
-              Let's curate your personal tank and help your decisions flow smoothly!
+              Let's curate your personal Finsh tank and bring clarity to every financial current!
             </Text>
           </Animated.View>
         </View>

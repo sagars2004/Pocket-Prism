@@ -124,15 +124,15 @@ export function ContextScreen({ onNext, onBack, navigation }: ContextScreenProps
       marginBottom: spacing.sm,
     },
     optionButtonSelected: {
-      borderColor: currentColors.primary,
-      backgroundColor: currentColors.tradeoffOptionA,
+      borderColor: isDark ? '#9CA3AF' : '#6B7280',
+      backgroundColor: isDark ? '#4B5563' : '#E5E7EB',
     },
     optionText: {
       ...typography.body,
       color: currentColors.text,
     },
     optionTextSelected: {
-      color: currentColors.primary,
+      color: isDark ? '#E5E7EB' : '#374151',
       fontWeight: '600',
     },
     chipButton: {
@@ -147,15 +147,15 @@ export function ContextScreen({ onNext, onBack, navigation }: ContextScreenProps
       alignSelf: 'flex-start',
     },
     chipButtonSelected: {
-      borderColor: currentColors.primary,
-      backgroundColor: currentColors.primaryLight + '20',
+      borderColor: isDark ? '#9CA3AF' : '#6B7280',
+      backgroundColor: isDark ? '#4B5563' : '#E5E7EB',
     },
     chipText: {
       ...typography.bodySmall,
       color: currentColors.text,
     },
     chipTextSelected: {
-      color: currentColors.primary,
+      color: isDark ? '#E5E7EB' : '#374151',
       fontWeight: '600',
     },
     buttonContainer: {
@@ -171,6 +171,10 @@ export function ContextScreen({ onNext, onBack, navigation }: ContextScreenProps
     },
     buttonContent: {
       paddingVertical: spacing.sm,
+    },
+    buttonLabel: {
+      fontSize: 18,
+      fontWeight: '700',
     },
     footerContainer: {
       backgroundColor: currentColors.surface,
@@ -272,6 +276,7 @@ export function ContextScreen({ onNext, onBack, navigation }: ContextScreenProps
             textColor={currentColors.text}
             style={[styles.backButton, styles.button]}
             contentStyle={styles.buttonContent}
+            labelStyle={styles.buttonLabel}
           >
             Back
           </Button>
@@ -283,6 +288,7 @@ export function ContextScreen({ onNext, onBack, navigation }: ContextScreenProps
             disabled={!livingSituation}
             style={styles.button}
             contentStyle={styles.buttonContent}
+            labelStyle={styles.buttonLabel}
           >
             Next
           </Button>

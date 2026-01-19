@@ -26,7 +26,7 @@ export function TutorialScreen({ navigation }: TutorialScreenProps) {
     {
       icon: 'swap-horizontal' as const,
       title: 'Smart Tradeoffs',
-      description: 'Explore decision tradeoffs like living alone vs. roommates, and see the financial impact of each choice.',
+      description: 'Explore decision tradeoffs for things you may be considering, and see the financial impact of each choice.',
     },
     {
       icon: 'chart-line' as const,
@@ -154,14 +154,14 @@ export function TutorialScreen({ navigation }: TutorialScreenProps) {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Getting Started</Text>
+          <Text style={styles.sectionTitle}>Building your Finsh Tank</Text>
           <View style={styles.stepContainer}>
             <Text style={styles.stepDescription}>
-              1. Complete the onboarding flow to set up your profile{'\n'}
-              2. Enter your paycheck details and living situation{'\n'}
-              3. Explore the dashboard to see your take-home pay{'\n'}
-              4. Use the Tradeoff Cards to compare financial decisions{'\n'}
-              5. Check the Planning page for long-term insights
+              1. Complete the onboarding flow to set up your basic profile.{'\n\n'}
+              2. Give some context about your situation, e.g. earnings, expenses, goals.{'\n\n'}
+              3. Explore the Dashboard to see your estimated take-home pay.{'\n\n'}
+              4. Use the Tradeoff cards to compare financial decisions you may be facing.{'\n\n'}
+              5. Check the Planning page for long-term analysis and insights.
             </Text>
           </View>
         </View>

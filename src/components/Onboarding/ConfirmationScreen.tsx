@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card } from 'react-native-paper';
 import { Footer } from '../shared/Footer';
@@ -61,12 +61,16 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
     content: {
       flex: 1,
     },
-    iconContainer: {
+    logoContainer: {
       alignItems: 'center',
+      justifyContent: 'center',
       marginBottom: spacing.xl,
+      width: '100%',
     },
-    icon: {
-      fontSize: 64,
+    logo: {
+      width: 120,
+      height: 120,
+      alignSelf: 'center',
     },
     title: {
       ...typography.h2,
@@ -120,6 +124,10 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
     buttonContent: {
       paddingVertical: spacing.sm,
     },
+    buttonLabel: {
+      fontSize: 18,
+      fontWeight: '700',
+    },
     footerContainer: {
       backgroundColor: currentColors.surface,
     },
@@ -133,8 +141,16 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.content}>
-          <View style={styles.iconContainer}>
-            <Text style={styles.icon}>✅</Text>
+          <View style={styles.logoContainer}>
+            <Image
+              source={
+                isDark
+                  ? require('../../../assets/finsh_logo_inverted.png')
+                  : require('../../../assets/finsh_logo.png')
+              }
+              style={styles.logo}
+              resizeMode="contain"
+            />
           </View>
           <Text style={styles.title}>You're all set!</Text>
           <Text style={styles.subtitle}>
@@ -175,7 +191,7 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
           </Card>
 
           <Text style={styles.message}>
-            Ready to see your first paycheck breakdown? Let's go!
+            Ready to see your paycheck breakdown?
           </Text>
         </View>
 
@@ -187,6 +203,7 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
             textColor={currentColors.text}
             style={[styles.backButton, styles.button]}
             contentStyle={styles.buttonContent}
+            labelStyle={styles.buttonLabel}
           >
             Back
           </Button>
@@ -197,8 +214,9 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
             textColor={isDark ? '#000000' : '#FFFFFF'}
             style={styles.button}
             contentStyle={styles.buttonContent}
+            labelStyle={styles.buttonLabel}
           >
-            Go to Dashboard
+            Let's go!
           </Button>
         </View>
       </ScrollView>

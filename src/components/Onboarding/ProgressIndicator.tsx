@@ -34,7 +34,7 @@ export function ProgressIndicator({ currentStep, totalSteps }: ProgressIndicator
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        Step {currentStep} of {totalSteps}
+        Step {currentStep - 1} of {totalSteps - 1}
       </Text>
       <ProgressBar
         progress={progress}

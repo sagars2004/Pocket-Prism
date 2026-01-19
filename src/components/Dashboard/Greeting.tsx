@@ -31,7 +31,7 @@ export function Greeting({ name }: GreetingProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.greeting}>{greeting}</Text>
-      <Text style={styles.subtitle}>Here's your first paycheck snapshot</Text>
+      <Text style={styles.subtitle}>Here's a snapshot of your paycheck</Text>
     </View>
   );
 }

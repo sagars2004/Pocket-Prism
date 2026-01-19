@@ -56,8 +56,8 @@ const EXPERIENCE_LEVELS = [
 export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScreenProps) {
   const { onboardingData, updateSalary } = useOnboarding();
   const { currentColors, isDark } = useTheme();
-  const [payFrequency, setPayFrequency] = useState<PayFrequency>(
-    onboardingData.salary.payFrequency || 'monthly'
+  const [payFrequency, setPayFrequency] = useState<PayFrequency | '' | 'other'>(
+    onboardingData.salary.payFrequency || ''
   );
   const [payAmount, setPayAmount] = useState(
     onboardingData.salary.annualSalary 
@@ -66,16 +66,23 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
   );
   const [state, setState] = useState(onboardingData.salary.state || '');
   const [city, setCity] = useState('');
+  const [customPayPeriods, setCustomPayPeriods] = useState('');
   const [error, setError] = useState('');
+  const [payAmountError, setPayAmountError] = useState('');
+  const [stateError, setStateError] = useState('');
+  const [payFrequencyError, setPayFrequencyError] = useState('');
   const [isLocating, setIsLocating] = useState(false);
   
   // Helper to get pay periods per year based on frequency
-  function getPayPeriodsPerYear(frequency: PayFrequency): number {
+  function getPayPeriodsPerYear(frequency: PayFrequency | '' | 'other'): number {
     switch (frequency) {
       case 'weekly': return 52;
       case 'biweekly': return 26;
       case 'semimonthly': return 24;
       case 'monthly': return 12;
+      case 'other': 
+        const periods = parseFloat(customPayPeriods);
+        return isNaN(periods) || periods <= 0 ? 12 : periods;
       default: return 12;
     }
   }
@@ -84,10 +91,14 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
   useEffect(() => {
     if (!onboardingData.salary.annualSalary && !onboardingData.salary.state) {
       setPayAmount('');
-      setPayFrequency('monthly');
+      setPayFrequency('');
       setState('');
       setCity('');
+      setCustomPayPeriods('');
       setError('');
+      setPayAmountError('');
+      setStateError('');
+      setPayFrequencyError('');
     }
   }, [onboardingData.salary]);
   
@@ -200,29 +211,53 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
   };
 
   const handleNext = () => {
+    // Reset all error messages
+    setError('');
+    setPayAmountError('');
+    setStateError('');
+    setPayFrequencyError('');
+    
+    let hasErrors = false;
     const payAmountNum = parseFloat(payAmount.replace(/[^0-9.]/g, ''));
     
+    // Validate paycheck amount
     if (!payAmount || isNaN(payAmountNum) || payAmountNum <= 0) {
-      setError('Please enter a valid paycheck amount');
-      return;
+      setPayAmountError('Please enter a valid paycheck amount');
+      hasErrors = true;
     }
 
+    // Validate state
     if (!state) {
-      setError('Please select your state');
-      return;
+      setStateError('Please select your state');
+      hasErrors = true;
     }
 
+    // Validate pay frequency
     if (!payFrequency) {
-      setError('Please select your pay frequency');
+      setPayFrequencyError('Please choose a valid pay frequency');
+      hasErrors = true;
+    } else if (payFrequency === 'other') {
+      // Validate custom pay periods
+      const periods = parseFloat(customPayPeriods);
+      if (!customPayPeriods || isNaN(periods) || periods <= 0) {
+        setPayFrequencyError('Please enter the number of pay periods per year');
+        hasErrors = true;
+      }
+    }
+
+    // If there are any errors, stop here
+    if (hasErrors) {
       return;
     }
 
+    // For "other" frequency, convert to monthly for storage (or handle differently)
+    // For now, we'll store 'other' but need to handle calculations
     // Calculate annual salary from paycheck amount and frequency
     const annualSalary = payAmountNum * getPayPeriodsPerYear(payFrequency);
 
     updateSalary({
       annualSalary,
-      payFrequency,
+      payFrequency: payFrequency === 'other' ? 'monthly' : payFrequency as PayFrequency, // Store as monthly for now if other
       state,
     });
 
@@ -264,6 +299,10 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
     },
     buttonContent: {
       paddingVertical: spacing.sm,
+    },
+    buttonLabel: {
+      fontSize: 18,
+      fontWeight: '700',
     },
     input: {
       marginBottom: spacing.md,
@@ -334,39 +373,63 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
             label="Pay Frequency"
             selectedValue={payFrequency}
             onValueChange={(value) => {
-              setPayFrequency(value as PayFrequency);
-              setError('');
+              setPayFrequency(value as PayFrequency | 'other' | '');
+              setPayFrequencyError('');
             }}
             items={[
+              { label: 'Select how often you\'re paid', value: '' },
               { label: 'Monthly', value: 'monthly' },
               { label: 'Semi-Monthly', value: 'semimonthly' },
               { label: 'Bi-Weekly', value: 'biweekly' },
               { label: 'Weekly', value: 'weekly' },
+              { label: 'Other', value: 'other' },
             ]}
-            placeholder="Select pay frequency"
-            error={!!error && !payFrequency}
+            placeholder="Select how often you're paid"
+            error={payFrequencyError ? payFrequencyError : undefined}
           />
+          
+          {payFrequency === 'other' && (
+            <>
+              <TextInput
+                label="Pay Periods Per Year"
+                placeholder="e.g., 13, 24, 26"
+                mode="outlined"
+                keyboardType="numeric"
+                value={customPayPeriods}
+                onChangeText={(text) => {
+                  setCustomPayPeriods(text);
+                  setPayFrequencyError('');
+                }}
+                error={!!payFrequencyError && payFrequency === 'other'}
+                style={styles.input}
+              />
+              <Text style={[styles.errorText, { color: currentColors.textSecondary, marginTop: -spacing.sm }]}>
+                Enter the number of times you get paid per year
+              </Text>
+            </>
+          )}
 
           <TextInput
-            label={`Paycheck Amount (${payFrequency === 'weekly' ? 'per week' : payFrequency === 'biweekly' ? 'every 2 weeks' : payFrequency === 'semimonthly' ? 'twice per month' : 'per month'})`}
-            placeholder="$3000.00"
+            label={`Paycheck Amount${payFrequency === 'weekly' ? ' (per week)' : payFrequency === 'biweekly' ? ' (every 2 weeks)' : payFrequency === 'semimonthly' ? ' (twice per month)' : payFrequency === 'monthly' ? ' (per month)' : payFrequency === 'other' ? (customPayPeriods ? ` (${customPayPeriods} times per year)` : '') : ''}`}
+            placeholder="Enter a value in USD"
             mode="outlined"
             keyboardType="numeric"
             value={payAmount}
             onChangeText={(text) => {
               setPayAmount(text);
-              setError('');
+              setPayAmountError('');
             }}
-            error={!!error && !payAmount}
+            error={!!payAmountError}
             style={styles.input}
             left={<TextInput.Affix text="$" />}
           />
+          {payAmountError && <Text style={styles.errorText}>{payAmountError}</Text>}
 
           <View style={styles.locationContainer}>
             <View style={styles.locationInputContainer}>
               <TextInput
                 label="City (optional)"
-                placeholder="San Francisco"
+                placeholder="Enter the city you currently reside in"
                 mode="outlined"
                 value={city}
                 onChangeText={setCity}
@@ -378,14 +441,14 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
                 selectedValue={state}
                 onValueChange={(value) => {
                   setState(value);
-                  setError('');
+                  setStateError('');
                 }}
                 items={[
                   { label: 'Select your state', value: '' },
                   ...US_STATES.map((s) => ({ label: s, value: s })),
                 ]}
                 placeholder="Select your state"
-                error={error && !state ? error : undefined}
+                error={stateError ? stateError : undefined}
               />
             </View>
             <TouchableOpacity
@@ -410,7 +473,6 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
             </TouchableOpacity>
           </View>
 
-          {error && <Text style={styles.errorText}>{error}</Text>}
         </View>
 
         <View style={styles.buttonContainer}>
@@ -421,6 +483,7 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
             textColor={currentColors.text}
             style={[styles.backButton, styles.button]}
             contentStyle={styles.buttonContent}
+            labelStyle={styles.buttonLabel}
           >
             Back
           </Button>
@@ -431,6 +494,7 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
             textColor={isDark ? '#000000' : '#FFFFFF'}
             style={styles.button}
             contentStyle={styles.buttonContent}
+            labelStyle={styles.buttonLabel}
           >
             Next
           </Button>
