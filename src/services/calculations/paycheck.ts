@@ -141,7 +141,12 @@ function calculateStateTax(grossPay: number, state: string): number {
 /**
  * Calculate per-paycheck gross pay based on salary and frequency
  */
-function calculateGrossPay(salary: number, frequency: PayFrequency): number {
+function calculateGrossPay(salary: number, frequency: PayFrequency, payPeriodsPerYear?: number): number {
+  // If custom payPeriodsPerYear is provided (for "other" frequency), use it
+  if (payPeriodsPerYear && payPeriodsPerYear > 0) {
+    return salary / payPeriodsPerYear;
+  }
+  
   switch (frequency) {
     case 'weekly':
       return salary / 52;
@@ -179,7 +184,7 @@ function calculateGrossPay(salary: number, frequency: PayFrequency): number {
  * @returns Detailed paycheck breakdown with all deductions
  */
 export function estimateTakeHome(salaryInput: SalaryInput): PaycheckBreakdown {
-  const grossPay = calculateGrossPay(salaryInput.annualSalary, salaryInput.payFrequency);
+  const grossPay = calculateGrossPay(salaryInput.annualSalary, salaryInput.payFrequency, salaryInput.payPeriodsPerYear);
   
   // Calculate federal tax using progressive brackets
   const federalTax = calculateFederalTax(grossPay, salaryInput.annualSalary);

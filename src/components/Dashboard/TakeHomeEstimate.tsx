@@ -86,7 +86,11 @@ export function TakeHomeEstimate({ breakdown, payFrequency }: TakeHomeEstimatePr
           </View>
         </View>
         <Text style={styles.amount}>{formatCurrency(takeHomePay)}</Text>
-        <Text style={styles.frequency}>Per {payFrequency.toLowerCase()}</Text>
+        <Text style={styles.frequency}>
+          {payFrequency.includes('times per year') 
+            ? `Per paycheck`
+            : `Per ${payFrequency.toLowerCase()} paycheck`}
+        </Text>
         <View style={styles.noteContainer}>
           <Text style={styles.note}>
             NOTE: This is an estimate. Your actual take-home may vary based on your specific deductions.

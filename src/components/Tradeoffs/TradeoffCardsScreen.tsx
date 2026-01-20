@@ -198,7 +198,7 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
     },
     navButton: {
       flex: 1,
-      borderRadius: 16,
+      borderRadius: 36,
       shadowColor: '#000',
       shadowOffset: {
         width: 0,
@@ -212,7 +212,7 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
       opacity: 0.5,
     },
     navButtonContent: {
-      paddingVertical: spacing.md,
+      paddingVertical: spacing.sm,
     },
     navButtonLabel: {
       ...typography.button,

@@ -41,7 +41,7 @@ export function calculateMonthlyProjections(
   const perCheckBenefits = breakdown.benefits.total;
   
   // Calculate monthly amounts based on pay frequency
-  const payPeriodsPerMonth = getPayPeriodsPerMonth(salaryInput.payFrequency);
+  const payPeriodsPerMonth = getPayPeriodsPerMonth(salaryInput.payFrequency, salaryInput.payPeriodsPerYear);
   const monthlyNet = perCheckNet * payPeriodsPerMonth;
   const monthlyGross = perCheckGross * payPeriodsPerMonth;
   const monthlyTaxes = perCheckTaxes * payPeriodsPerMonth;
@@ -80,7 +80,12 @@ export function calculateMonthlyProjections(
 /**
  * Get pay periods per month based on frequency
  */
-function getPayPeriodsPerMonth(frequency: PayFrequency): number {
+function getPayPeriodsPerMonth(frequency: PayFrequency, payPeriodsPerYear?: number): number {
+  // If custom payPeriodsPerYear is provided (for "other" frequency), calculate from that
+  if (payPeriodsPerYear && payPeriodsPerYear > 0) {
+    return payPeriodsPerYear / 12;
+  }
+  
   switch (frequency) {
     case 'weekly':
       return 4.33; // Average weeks per month
@@ -135,9 +140,9 @@ export function calculateTradeoffComparisons(
   baseSalaryInput: SalaryInput
 ): TradeoffComparison[] {
   const baseBreakdown = estimateTakeHome(baseSalaryInput);
-  const monthlyNetBase = baseBreakdown.takeHomePay * getPayPeriodsPerMonth(baseSalaryInput.payFrequency);
+  const monthlyNetBase = baseBreakdown.takeHomePay * getPayPeriodsPerMonth(baseSalaryInput.payFrequency, baseSalaryInput.payPeriodsPerYear);
   const annualNetBase = monthlyNetBase * 12;
-  const payPeriodsPerMonth = getPayPeriodsPerMonth(baseSalaryInput.payFrequency);
+  const payPeriodsPerMonth = getPayPeriodsPerMonth(baseSalaryInput.payFrequency, baseSalaryInput.payPeriodsPerYear);
   
   const comparisons: TradeoffComparison[] = [
     {
@@ -251,7 +256,7 @@ export function calculateExpenseAccumulation(
   months: number = 12
 ): ExpenseAccumulation[] {
   const breakdown = estimateTakeHome(salaryInput);
-  const monthlyNet = breakdown.takeHomePay * getPayPeriodsPerMonth(salaryInput.payFrequency);
+  const monthlyNet = breakdown.takeHomePay * getPayPeriodsPerMonth(salaryInput.payFrequency, salaryInput.payPeriodsPerYear);
   
   const accumulations: ExpenseAccumulation[] = [];
   let remainingBalance = 0;

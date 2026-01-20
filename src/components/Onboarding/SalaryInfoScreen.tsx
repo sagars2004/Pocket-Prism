@@ -281,15 +281,17 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
       return;
     }
 
-    // For "other" frequency, convert to monthly for storage (or handle differently)
-    // For now, we'll store 'other' but need to handle calculations
     // Calculate annual salary from paycheck amount and frequency
     const annualSalary = payAmountNum * getPayPeriodsPerYear(payFrequency);
 
+    // For "other" frequency, store as monthly but save the custom payPeriodsPerYear
+    const periodsPerYear = payFrequency === 'other' ? parseFloat(customPayPeriods) : undefined;
+
     updateSalary({
       annualSalary,
-      payFrequency: payFrequency === 'other' ? 'monthly' : payFrequency as PayFrequency, // Store as monthly for now if other
+      payFrequency: payFrequency === 'other' ? 'monthly' : payFrequency as PayFrequency,
       state,
+      payPeriodsPerYear: periodsPerYear,
     });
 
     onNext();

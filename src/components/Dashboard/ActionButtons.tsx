@@ -20,7 +20,7 @@ export function ActionButtons({ onViewTradeoffs, onViewBreakdown }: ActionButton
     },
     button: {
       width: '100%',
-      borderRadius: 16,
+      borderRadius: 24,
       shadowColor: '#000',
       shadowOffset: {
         width: 0,

@@ -28,8 +28,10 @@ export function DashboardScreen({ onViewTradeoffs, onViewBreakdown, navigation }
   }, [userData]);
 
   const payFrequencyLabel = userData?.salary?.payFrequency
-    ? userData.salary.payFrequency.charAt(0).toUpperCase() +
-      userData.salary.payFrequency.slice(1).replace(/([A-Z])/g, ' $1')
+    ? userData.salary.payPeriodsPerYear
+      ? `${userData.salary.payPeriodsPerYear} times per year`
+      : userData.salary.payFrequency.charAt(0).toUpperCase() +
+        userData.salary.payFrequency.slice(1).replace(/([A-Z])/g, ' $1')
     : 'paycheck';
 
   const styles = StyleSheet.create({

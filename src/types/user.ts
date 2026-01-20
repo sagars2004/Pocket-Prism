@@ -4,6 +4,7 @@ export interface SalaryInput {
   annualSalary: number;
   payFrequency: PayFrequency;
   state: string;
+  payPeriodsPerYear?: number; // For "other" frequency, stores custom pay periods per year
 }
 
 export interface ExpenseContext {

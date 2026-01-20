@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from 'react-native-paper';
 import { Footer } from '../shared/Footer';
 import { useUser } from '../../context/UserContext';
+import { useOnboarding } from '../../context/OnboardingContext';
 import { useTheme } from '../../context/ThemeContext';
 import { typography } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
@@ -16,6 +17,7 @@ interface SettingsScreenProps {
 
 export function SettingsScreen({ onBack, onNavigateToHome, navigation }: SettingsScreenProps) {
   const { userData, clearUserData } = useUser();
+  const { resetOnboarding } = useOnboarding();
   const { themeMode, setThemeMode, currentColors, isDark } = useTheme();
   const [notificationsEnabled, setNotificationsEnabled] = React.useState(true);
   const [biometricEnabled, setBiometricEnabled] = React.useState(false);
@@ -39,9 +41,20 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
           onPress: async () => {
             try {
               await clearUserData();
+              // Also clear any in-memory onboarding form state
+              resetOnboarding();
               Alert.alert('Success', 'All data has been cleared.');
-              // Navigate back to welcome screen
-              onBack();
+              // Navigate to welcome screen
+              if (navigation) {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Welcome' }],
+                });
+              } else if (onNavigateToHome) {
+                onNavigateToHome();
+              } else {
+                onBack();
+              }
             } catch (error) {
               Alert.alert('Error', 'Failed to clear data. Please try again.');
             }

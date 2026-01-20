@@ -36,6 +36,7 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
           annualSalary: onboardingData.salary.annualSalary,
           payFrequency: onboardingData.salary.payFrequency,
           state: onboardingData.salary.state,
+          payPeriodsPerYear: onboardingData.salary.payPeriodsPerYear,
         },
         expenses: {
           livingSituation: onboardingData.expenses.livingSituation,
@@ -169,8 +170,10 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
                 <Text style={styles.summaryLabel}>Pay Frequency:</Text>
                 <Text style={styles.summaryValue}>
                   {onboardingData.salary.payFrequency
-                    ? onboardingData.salary.payFrequency.charAt(0).toUpperCase() +
-                      onboardingData.salary.payFrequency.slice(1).replace(/([A-Z])/g, ' $1')
+                    ? onboardingData.salary.payPeriodsPerYear
+                      ? `${onboardingData.salary.payPeriodsPerYear} times per year`
+                      : onboardingData.salary.payFrequency.charAt(0).toUpperCase() +
+                        onboardingData.salary.payFrequency.slice(1).replace(/([A-Z])/g, ' $1')
                     : 'Not set'}
                 </Text>
               </View>

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Card } from 'react-native-paper';
@@ -276,6 +276,12 @@ export function PlanScreen({ onBack, onNavigateToHome, onNavigateToSettings, nav
       padding: spacing.xxl,
       alignItems: 'center',
     },
+    emptyLogo: {
+      width: 540,
+      height: 168,
+      resizeMode: 'contain',
+      marginBottom: spacing.md,
+    },
     emptyText: {
       ...typography.body,
       color: currentColors.textSecondary,
@@ -297,8 +303,22 @@ export function PlanScreen({ onBack, onNavigateToHome, onNavigateToSettings, nav
           <View style={styles.placeholder} />
         </View>
         <View style={styles.emptyContainer}>
-          <MaterialCommunityIcons name="chart-line" size={64} color={currentColors.textSecondary} />
-          <Text style={styles.emptyText}>Please complete onboarding to see your Finsh tank.</Text>
+          <Image
+            source={
+              isDark
+                ? require('../../../assets/finsh_logo_inverted.png')
+                : require('../../../assets/finsh_logo.png')
+            }
+            style={styles.emptyLogo}
+            accessible
+            accessibilityLabel="Finsh logo"
+          />
+          <Text style={[styles.emptyText, { marginTop: spacing.sm }]}>
+            Woah there! We know you're enthusiastic but there's a couple steps you need to do first.
+          </Text>
+          <Text style={styles.emptyText}>
+            {'\n'}Please complete onboarding to see your personalized Finsh tank.
+          </Text>
         </View>
       </SafeAreaView>
     );
@@ -323,7 +343,7 @@ export function PlanScreen({ onBack, onNavigateToHome, onNavigateToSettings, nav
   const currentMonthBreakdown = useMemo(() => {
     if (!userData?.salary) return null;
     const breakdown = estimateTakeHome(userData.salary);
-    const payPeriodsPerMonth = getPayPeriodsPerMonth(userData.salary.payFrequency);
+    const payPeriodsPerMonth = getPayPeriodsPerMonth(userData.salary.payFrequency, userData.salary.payPeriodsPerYear);
     
     const gross = breakdown.grossPay * payPeriodsPerMonth;
     const federalTax = breakdown.taxes.federal * payPeriodsPerMonth;
@@ -351,7 +371,12 @@ export function PlanScreen({ onBack, onNavigateToHome, onNavigateToSettings, nav
   }, [userData?.salary, totalMonthlyExpenses]);
 
   // Helper to get pay periods per month
-  function getPayPeriodsPerMonth(frequency: string): number {
+  function getPayPeriodsPerMonth(frequency: string, payPeriodsPerYear?: number): number {
+    // If custom payPeriodsPerYear is provided (for "other" frequency), calculate from that
+    if (payPeriodsPerYear && payPeriodsPerYear > 0) {
+      return payPeriodsPerYear / 12;
+    }
+    
     switch (frequency) {
       case 'weekly': return 52 / 12;
       case 'biweekly': return 26 / 12;
