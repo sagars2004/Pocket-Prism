@@ -34,9 +34,14 @@ export function TutorialScreen({ navigation }: TutorialScreenProps) {
       description: 'Track your earnings over time, compare scenarios, and see how expenses accumulate month by month.',
     },
     {
+      icon: 'lightbulb' as const,
+      title: 'Helpful Tips',
+      description: 'View helpful tips and insights to maximize your money machine\'s potential in 2026 and beyond.',
+    },
+    {
       icon: 'cog' as const,
       title: 'Settings',
-      description: 'Customize your app experience, adjust your theme, and manage preferences, and leave reviews and feedback.',
+      description: 'Customize your app experience, adjust your theme, manage preferences, and leave reviews and feedback.',
     },
   ];
 
@@ -131,7 +136,7 @@ export function TutorialScreen({ navigation }: TutorialScreenProps) {
         <View style={styles.header}>
           <Text style={styles.title}>Welcome to Finsh</Text>
           <Text style={styles.subtitle}>
-            Learn how to navigate and make the most of your financial journey
+            Learn how to navigate and make the most of your financial journey!
           </Text>
         </View>
 
@@ -161,7 +166,8 @@ export function TutorialScreen({ navigation }: TutorialScreenProps) {
               2. Give some context about your situation, e.g. earnings, expenses, goals.{'\n\n'}
               3. Explore the Dashboard to see your estimated take-home pay.{'\n\n'}
               4. Use the Trade-off cards to compare financial decisions you may be facing.{'\n\n'}
-              5. Check the Plan page for more long-term analysis and insights.
+              5. Check the Plan page for more long-term analysis and insights.{'\n\n'}
+              6. See the Tips page to view a helpful flowchart of smart tactics to leverage with your paycheck.
             </Text>
           </View>
         </View>
