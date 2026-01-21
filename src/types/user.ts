@@ -18,6 +18,8 @@ export interface ExpenseContext {
   livingSituation: 'alone' | 'roommates' | 'family';
   majorExpenses?: string[];
   goals?: string[];
+  priorityFocus?: string[];
+  confidenceLevel?: 'very_low' | 'low' | 'medium' | 'high' | 'very_high';
 }
 
 export interface UserData {

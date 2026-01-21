@@ -19,7 +19,7 @@ interface PickerItem {
 }
 
 interface PickerProps {
-  label?: string;
+  label?: string | React.ReactNode;
   selectedValue: string;
   onValueChange: (value: string) => void;
   items: PickerItem[];

@@ -60,7 +60,7 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
     onboardingData.salary.payFrequency || ''
   );
   const [payAmount, setPayAmount] = useState(
-    onboardingData.salary.annualSalary 
+    onboardingData.salary.annualSalary
       ? (onboardingData.salary.annualSalary / getPayPeriodsPerYear(onboardingData.salary.payFrequency || 'monthly')).toFixed(2)
       : ''
   );
@@ -72,7 +72,7 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
   const [stateError, setStateError] = useState('');
   const [payFrequencyError, setPayFrequencyError] = useState('');
   const [isLocating, setIsLocating] = useState(false);
-  
+
   // Helper to get pay periods per year based on frequency
   function getPayPeriodsPerYear(frequency: PayFrequency | '' | 'other'): number {
     switch (frequency) {
@@ -80,7 +80,7 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
       case 'biweekly': return 26;
       case 'semimonthly': return 24;
       case 'monthly': return 12;
-      case 'other': 
+      case 'other':
         const periods = parseFloat(customPayPeriods);
         return isNaN(periods) || periods <= 0 ? 12 : periods;
       default: return 12;
@@ -101,7 +101,7 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
       setPayFrequencyError('');
     }
   }, [onboardingData.salary]);
-  
+
   // Update pay amount when frequency changes to recalculate annual equivalent
   useEffect(() => {
     if (payAmount && onboardingData.salary.annualSalary) {
@@ -140,12 +140,12 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
 
       if (geocode && geocode.length > 0) {
         const address = geocode[0];
-        
+
         // Extract city and state
         if (address.city) {
           setCity(address.city);
         }
-        
+
         if (address.region) {
           // Convert state abbreviation to full name if needed
           const stateName = address.region;
@@ -155,11 +155,12 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
             // Note: expo-location returns ISO 3166-2 codes, we may need to map them
             // For now, use the region as-is since it might be full name or abbreviation
             const foundState = US_STATES.find(
-              s => s.toLowerCase().startsWith(stateName.toLowerCase()) || 
-              s.substring(0, 2).toLowerCase() === stateName.toLowerCase()
+              s => s.toLowerCase().startsWith(stateName.toLowerCase()) ||
+                s.substring(0, 2).toLowerCase() === stateName.toLowerCase()
             );
             if (foundState) {
               setState(foundState);
+              setStateError('');
             } else {
               // If not found, use the region as-is (might be abbreviation)
               // Try to find state by abbreviation
@@ -181,9 +182,11 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
               const fullStateName = stateAbbrevMap[stateName.toUpperCase()];
               if (fullStateName) {
                 setState(fullStateName);
+                setStateError('');
               } else {
                 // Last resort: use as-is
                 setState(stateName);
+                setStateError('');
               }
             }
           } else {
@@ -193,8 +196,10 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
             );
             if (foundState) {
               setState(foundState);
+              setStateError('');
             } else {
               setState(stateName);
+              setStateError('');
             }
           }
         }
@@ -241,10 +246,10 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
     setPayAmountError('');
     setStateError('');
     setPayFrequencyError('');
-    
+
     let hasErrors = false;
     const payAmountNum = parseFloat(payAmount.replace(/[^0-9.]/g, ''));
-    
+
     // Validate paycheck amount
     if (!payAmount || isNaN(payAmountNum) || payAmountNum < 0) {
       setPayAmountError('Please enter a valid amount');
@@ -408,7 +413,7 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
 
           <View style={styles.pickerContainer}>
             <Picker
-              label="Pay Frequency"
+              label={<Text>Pay Frequency <Text style={{ color: currentColors.error || '#EF4444' }}>*</Text></Text>}
               selectedValue={payFrequency}
               onValueChange={(value) => {
                 setPayFrequency(value as PayFrequency | 'other' | '');
@@ -426,7 +431,7 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
               isValid={!!isValidPayFrequency()}
             />
           </View>
-          
+
           {payFrequency === 'other' && (
             <>
               <TextInput
@@ -465,7 +470,7 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
           )}
 
           <TextInput
-            label={`Paycheck Amount${payFrequency === 'weekly' ? ' (per week)' : payFrequency === 'biweekly' ? ' (every 2 weeks)' : payFrequency === 'monthly' ? ' (per month)' : payFrequency === 'other' ? (customPayPeriods ? ` (${customPayPeriods} times per year)` : '') : ''}`}
+            label={`Paycheck Amount${payFrequency === 'weekly' ? ' (per week)' : payFrequency === 'biweekly' ? ' (every 2 weeks)' : payFrequency === 'monthly' ? ' (per month)' : payFrequency === 'other' ? (customPayPeriods ? ` (${customPayPeriods} times per year)` : '') : ''} *`}
             placeholder="Enter a value in USD"
             mode="outlined"
             keyboardType="numeric"
@@ -504,7 +509,7 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
               />
               <View style={styles.pickerContainer}>
                 <Picker
-                  label="State"
+                  label={<Text>State <Text style={{ color: currentColors.error || '#EF4444' }}>*</Text></Text>}
                   selectedValue={state}
                   onValueChange={(value) => {
                     setState(value);

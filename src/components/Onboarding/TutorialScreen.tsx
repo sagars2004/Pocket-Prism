@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
+import { useUser } from '../../context/UserContext';
+import { useOnboarding } from '../../context/OnboardingContext';
 import { typography } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 
@@ -12,7 +14,12 @@ interface TutorialScreenProps {
 }
 
 export function TutorialScreen({ navigation }: TutorialScreenProps) {
-  const handleContinue = () => {
+  const { clearUserData } = useUser();
+  const { resetOnboarding } = useOnboarding();
+
+  const handleContinue = async () => {
+    await clearUserData();
+    resetOnboarding();
     navigation.navigate('SalaryInfo');
   };
   const { currentColors, isDark } = useTheme();
@@ -134,9 +141,9 @@ export function TutorialScreen({ navigation }: TutorialScreenProps) {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>Welcome to Finsh</Text>
+          <Text style={styles.title}>This is Finsh.</Text>
           <Text style={styles.subtitle}>
-            Learn how to navigate and make the most of your financial journey!
+            Here's how you can curate your personal Finsh tank and make your financial currents flow effortlessly!
           </Text>
         </View>
 

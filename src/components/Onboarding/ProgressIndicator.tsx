@@ -12,7 +12,7 @@ interface ProgressIndicatorProps {
 
 export function ProgressIndicator({ currentStep, totalSteps }: ProgressIndicatorProps) {
   const { currentColors } = useTheme();
-  const progress = currentStep / totalSteps;
+  const progress = (currentStep - 1) / (totalSteps - 1);
 
   const styles = StyleSheet.create({
     container: {

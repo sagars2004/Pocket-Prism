@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
+import { useUser } from '../../context/UserContext';
+import { useOnboarding } from '../../context/OnboardingContext';
 import { typography } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 
@@ -29,6 +31,8 @@ interface Bubble {
 
 export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
   const { currentColors, isDark } = useTheme();
+  const { clearUserData } = useUser();
+  const { resetOnboarding } = useOnboarding();
   const translateY = useRef(new Animated.Value(0)).current;
 
   // Entrance animations for text elements
@@ -41,64 +45,34 @@ export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
   // Track intro sequence state (4 seconds of logo only)
   const [showIntro, setShowIntro] = useState(true);
 
+  const handleGetStarted = async () => {
+    // Clear all persistent user data
+    await clearUserData();
+    // Reset temporary onboarding state
+    resetOnboarding();
+
+    // Proceed to next screen
+    onNext();
+  };
+
   // Create bubbles - small circular particles that drift left with random spawning
-  // Bubbles appear strictly above the title and below all text content
+  // Bubbles appear across the entire screen
   const [bubbles] = useState<Bubble[]>(() => {
-    const topBubbleCount = 70; // Bubbles above the title
-    const bottomBubbleCount = 40; // Bubbles below all content
-    const totalCount = topBubbleCount + bottomBubbleCount;
+    const bubbleCount = 110; // Total bubbles (70 + 40)
     const bubblesArray: Bubble[] = [];
     const baseDuration = 8000; // Base duration for consistent speed
     const minDuration = 6000; // Minimum duration (faster bubbles)
     const maxDuration = 12000; // Maximum duration (slower bubbles)
 
-    // Define zones - title starts around 30-35% of screen (adjust based on layout)
-    const titleTopZone = SCREEN_HEIGHT * 0.30; // Everything below this is title/content
-    const contentBottomZone = SCREEN_HEIGHT * 0.60; // Everything below this is safe for bubbles
-
-    // Create bubbles in the top area (strictly above title: 0% to titleTopZone)
-    for (let i = 0; i < topBubbleCount; i++) {
+    // Create bubbles uniformly across the entire screen
+    for (let i = 0; i < bubbleCount; i++) {
       // Space out bubbles across a wide range on the right side
       const spreadWidth = SCREEN_WIDTH * 3;
-      const initialX = SCREEN_WIDTH + 20 + (i / topBubbleCount) * spreadWidth;
+      const initialX = SCREEN_WIDTH + 20 + (i / bubbleCount) * spreadWidth;
 
-      // Y position in top area only (strictly above title)
-      const minY = SCREEN_HEIGHT * 0.0; // Start from very top
-      const maxY = titleTopZone; // Up to where title starts
-      const startY = minY + Math.random() * (maxY - minY);
-
-      // Random size: 4-8 pixels
-      const size = Math.random() * 4 + 4;
-
-      // Random duration for varied speeds
-      const duration = minDuration + Math.random() * (maxDuration - minDuration);
-
-      // Calculate delay based on position to ensure continuous flow
-      const distanceToScreen = initialX - SCREEN_WIDTH - 20;
-      const averageSpeed = SCREEN_WIDTH / baseDuration;
-      const delay = Math.max(0, distanceToScreen / averageSpeed);
-
-      bubblesArray.push({
-        id: i,
-        size,
-        startX: new Animated.Value(initialX),
-        initialX,
-        startY,
-        duration,
-        delay,
-      });
-    }
-
-    // Create bubbles in the bottom area (below all content)
-    for (let i = topBubbleCount; i < totalCount; i++) {
-      const bottomBubbleIndex = i - topBubbleCount;
-      // Space out bubbles across a wide range on the right side
-      const spreadWidth = SCREEN_WIDTH * 3;
-      const initialX = SCREEN_WIDTH + 20 + (bottomBubbleIndex / bottomBubbleCount) * spreadWidth;
-
-      // Y position in bottom area only (below all text/features)
-      const minY = contentBottomZone; // Start from below content area
-      const maxY = SCREEN_HEIGHT * 0.85; // Up to 85% down (leaving some space for button)
+      // Y position anywhere on screen
+      const minY = 0;
+      const maxY = SCREEN_HEIGHT;
       const startY = minY + Math.random() * (maxY - minY);
 
       // Random size: 4-8 pixels
@@ -485,8 +459,8 @@ export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
               </View>
             </View>
 
-            <Text style={styles.description}>
-              Curate your personal Finsh tank and make your financial currents flow effortlessly!
+            <Text style={styles.subtitle}>
+              Keep your paycheck swimming in the right direction. Let's dive right in!
             </Text>
           </Animated.View>
         </View>
@@ -494,7 +468,7 @@ export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
-            onPress={onNext}
+            onPress={handleGetStarted}
             buttonColor={isDark ? '#E5E5E5' : '#000000'}
             textColor={isDark ? '#000000' : '#FFFFFF'}
             style={styles.button}
