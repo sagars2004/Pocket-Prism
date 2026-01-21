@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert, Image, TextInput, ActivityIndicator, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert, Image, TextInput, ActivityIndicator, KeyboardAvoidingView, Platform, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from 'react-native-paper';
@@ -11,6 +11,7 @@ import { typography } from '../../theme/typography';
 import { spacing } from '../../theme/spacing';
 
 import Constants from 'expo-constants';
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface SettingsScreenProps {
   onBack: () => void;
@@ -312,7 +313,7 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
     },
     copyright: {
       ...typography.caption,
-      color: currentColors.textSecondary,
+      color: '#FFFFFF',
       textAlign: 'center',
       fontSize: 11,
       marginTop: spacing.lg,
@@ -320,6 +321,16 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
       paddingTop: spacing.md,
       borderTopWidth: 1,
       borderTopColor: currentColors.borderLight,
+    },
+    socialLinksContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: spacing.md,
+      gap: spacing.lg,
+    },
+    socialIcon: {
+      padding: spacing.xs,
     },
   });
 
@@ -367,7 +378,7 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
                 <View style={styles.appearanceInfo}>
                   <Text style={[styles.appearanceLabel, { color: currentColors.text }]}>System</Text>
                   <Text style={[styles.appearanceDescription, { color: currentColors.textSecondary }]}>
-                    Follow system settings
+                    Use device settings
                   </Text>
                 </View>
                 {themeMode === 'system' && (
@@ -383,7 +394,7 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
                 <View style={styles.appearanceInfo}>
                   <Text style={[styles.appearanceLabel, { color: currentColors.text }]}>Light</Text>
                   <Text style={[styles.appearanceDescription, { color: currentColors.textSecondary }]}>
-                    Always use light mode
+                    A classic, rich feel
                   </Text>
                 </View>
                 {themeMode === 'light' && (
@@ -399,7 +410,7 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
                 <View style={styles.appearanceInfo}>
                   <Text style={[styles.appearanceLabel, { color: currentColors.text }]}>Dark</Text>
                   <Text style={[styles.appearanceDescription, { color: currentColors.textSecondary }]}>
-                    Always use dark mode
+                    A stealthy, minimal vibe
                   </Text>
                 </View>
                 {themeMode === 'dark' && (
@@ -414,7 +425,7 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
               <View style={styles.settingRow}>
                 <View style={styles.settingInfo}>
                   <Text style={[styles.settingLabel, { color: currentColors.text }]}>Notifications</Text>
-                  <Text style={[styles.settingDescription, { color: currentColors.textSecondary }]}>Get reminders and updates</Text>
+                  <Text style={[styles.settingDescription, { color: currentColors.textSecondary }]}>Allow pop-ups and reminders</Text>
                 </View>
                 <Switch
                   value={notificationsEnabled}
@@ -519,7 +530,7 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
                 <Text style={[styles.aboutTitle, { color: currentColors.text }]}>About Finsh</Text>
                 <Text style={[styles.aboutText, { color: currentColors.textSecondary }]}>Version 1.0.0</Text>
                 <Text style={[styles.aboutText, { color: currentColors.textSecondary }]}>
-                  Helping you understand your paycheck and make smarter financial decisions.
+                  Keep your paycheck swimming in the right direction. Thanks for using Finsh!
                 </Text>
               </View>
             </Card.Content>
@@ -528,6 +539,30 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
           <Text style={styles.copyright}>
             © 2026 Sagar Sahu. All Rights Reserved.
           </Text>
+
+          <View style={styles.socialLinksContainer}>
+            <TouchableOpacity
+              style={styles.socialIcon}
+              onPress={() => Linking.openURL(Constants.expoConfig?.extra?.INSTAGRAM || 'https://instagram.com/')}
+            >
+              <MaterialCommunityIcons name="instagram" size={48} color={currentColors.text} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.socialIcon}
+              onPress={() => Linking.openURL(Constants.expoConfig?.extra?.LINKEDIN || 'https://linkedin.com/')}
+            >
+              <MaterialCommunityIcons name="linkedin" size={48} color={currentColors.text} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.socialIcon}
+              onPress={() => Linking.openURL(Constants.expoConfig?.extra?.TIKTOK || 'https://tiktok.com/')}
+            >
+              <FontAwesome5 name="tiktok" size={40} color={currentColors.text} />
+            </TouchableOpacity>
+
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
 

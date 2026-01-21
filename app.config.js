@@ -47,6 +47,9 @@ module.exports = {
     extra: {
       PRIVATE_RESEND_API_KEY: process.env.PRIVATE_RESEND_API_KEY,
       PRIVATE_EMAIL: process.env.PRIVATE_EMAIL,
+      LINKEDIN: process.env.LINKEDIN,
+      INSTAGRAM: process.env.INSTAGRAM,
+      TIKTOK: process.env.TIKTOK,
     },
     scheme: 'finsh',
   },

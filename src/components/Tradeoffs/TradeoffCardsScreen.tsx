@@ -322,7 +322,7 @@ export function TradeoffCardsScreen({ onBack, navigation }: TradeoffCardsScreenP
               {'\n'}
               <Text style={{ color: '#4ADE80', fontWeight: 'bold' }}>Green (+)</Text> adds to your monthly cash.
               {'\n'}
-              <Text style={{ color: '#F87171', fontWeight: 'bold' }}>Red (-)</Text> takes away from your monthly cash.
+              <Text style={{ color: '#F87171', fontWeight: 'bold' }}>Red (-)</Text> takes away from your savings bucket.
             </Text>
             <Animated.View style={cardStyle}>
               <TradeoffCard

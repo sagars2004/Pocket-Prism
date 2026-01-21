@@ -52,7 +52,7 @@ export function TradeoffCard({ title, optionA, optionB, annualSalary = 50000 }: 
     // Dark Mode Colors
     const darkModeColors = {
       A: { bg: '#8b939fd4', border: '#ffffffff', text: '#D1D5DB', textSec: '#D1D5DB', badgeBg: 'rgba(32, 32, 32, 0.29)' },
-      B: { bg: '#949aa676', border: '#ffffffff', text: '#D1D5DB', textSec: '#D1D5DB', badgeBg: 'rgba(221, 218, 218, 0.26)' }
+      B: { bg: currentColors.surface, border: '#ffffffff', text: '#D1D5DB', textSec: '#D1D5DB', badgeBg: 'rgba(221, 218, 218, 0.26)' }
     };
 
     const colors = isDark ? darkModeColors[type] : lightModeColors[type];
@@ -122,7 +122,7 @@ export function TradeoffCard({ title, optionA, optionB, annualSalary = 50000 }: 
 
         {!isExpanded && (
           <View style={{ alignItems: 'center', marginTop: spacing.sm }}>
-            <Text style={{ fontSize: 12, color: 'rgba(0, 0, 0, 1)', fontWeight: '600' }}>
+            <Text style={{ fontSize: 12, color: isDark ? '#fff' : 'rgba(0, 0, 0, 1)', fontWeight: '600' }}>
               Tap for details
             </Text>
           </View>
