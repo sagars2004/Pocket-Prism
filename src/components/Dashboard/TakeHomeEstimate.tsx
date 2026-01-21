@@ -20,8 +20,8 @@ export function TakeHomeEstimate({ breakdown, payFrequency }: TakeHomeEstimatePr
     card: {
       marginBottom: spacing.lg,
       backgroundColor: currentColors.surface,
-      borderWidth: 1,
-      borderColor: currentColors.borderLight,
+      borderWidth: 4,
+      borderColor: '#E5E5E5',
       borderRadius: 16,
     },
     cardContent: {

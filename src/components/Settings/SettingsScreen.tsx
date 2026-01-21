@@ -305,7 +305,7 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
     },
     submitButtonText: {
       ...typography.body,
-      color: '#FFFFFF',
+      color: isDark ? '#FFFFFF' : '#000',
       fontWeight: '600',
     },
     footerContainer: {

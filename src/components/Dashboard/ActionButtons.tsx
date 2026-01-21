@@ -53,7 +53,7 @@ export function ActionButtons({ onViewTradeoffs, onViewBreakdown }: ActionButton
       <Button
         mode="contained"
         onPress={onViewBreakdown}
-        buttonColor={isDark ? '#E5E5E5' : '#000000'}
+        buttonColor={currentColors.textSecondary}
         textColor={isDark ? '#000000' : '#FFFFFF'}
         style={styles.button}
         contentStyle={styles.buttonContent}
@@ -65,7 +65,7 @@ export function ActionButtons({ onViewTradeoffs, onViewBreakdown }: ActionButton
       <Button
         mode="contained"
         onPress={onViewTradeoffs}
-        buttonColor={isDark ? '#E5E5E5' : '#000000'}
+        buttonColor={currentColors.textSecondary}
         textColor={isDark ? '#000000' : '#FFFFFF'}
         style={styles.button}
         contentStyle={styles.buttonContent}
