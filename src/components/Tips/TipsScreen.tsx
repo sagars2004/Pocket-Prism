@@ -196,7 +196,7 @@ export function TipsScreen({ onBack, navigation }: TipsScreenProps) {
             title: 'Future You (401k / IRA)',
             subtitle: 'Retirement Stream',
             details: ['Get your employer match!', 'Aim for 10-15% total contribution'],
-            microcopy: 'Remeber, time is your strongest current.',
+            microcopy: 'Remember, time is your strongest current.',
             color: '#9C27B0'
         },
         {
