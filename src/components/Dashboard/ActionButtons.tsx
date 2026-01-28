@@ -43,7 +43,7 @@ export function ActionButtons({ onViewTradeoffs, onViewBreakdown }: ActionButton
   });
 
   const TradeoffIcon = ({ color }: { color: string }) => (
-    <MaterialCommunityIcons name="swap-horizontal" size={24} color={color} />
+    <MaterialCommunityIcons name="scale-balance" size={24} color={color} />
   );
 
   const BreakdownIcon = ({ color }: { color: string }) => (

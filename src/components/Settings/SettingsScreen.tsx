@@ -49,51 +49,15 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
         }
       }
     } catch (e) {
-      console.error('Error checking cooldown', e);
+      console.error('Error checking cooldownx', e);
     }
   };
 
-  const handleThemeChange = async (mode: 'system' | 'light' | 'dark') => {
+  const handleThemeChange = async (mode: 'light' | 'dark') => {
     await setThemeMode(mode);
   };
 
-  const handleClearData = () => {
-    Alert.alert(
-      'Clear All Data',
-      'This will delete all your information and reset the app. Are you sure you want to proceed?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Clear',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await clearUserData();
-              // Also clear any in-memory onboarding form state
-              resetOnboarding();
-              Alert.alert('Success', 'All data has been cleared.');
-              // Navigate to welcome screen
-              if (navigation) {
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: 'Welcome' }],
-                });
-              } else if (onNavigateToHome) {
-                onNavigateToHome();
-              } else {
-                onBack();
-              }
-            } catch (error) {
-              Alert.alert('Error', 'Failed to clear data. Please try again.');
-            }
-          },
-        },
-      ]
-    );
-  };
+
 
   const handleSendFeedback = async () => {
     if (inCooldown) {
@@ -370,21 +334,7 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
               <View style={styles.sectionHeader}>
                 <Text style={[styles.sectionTitle, { color: currentColors.text }]}>Appearance</Text>
               </View>
-              <TouchableOpacity
-                style={styles.appearanceOption}
-                onPress={() => handleThemeChange('system')}
-                activeOpacity={0.7}
-              >
-                <View style={styles.appearanceInfo}>
-                  <Text style={[styles.appearanceLabel, { color: currentColors.text }]}>System</Text>
-                  <Text style={[styles.appearanceDescription, { color: currentColors.textSecondary }]}>
-                    Use device settings
-                  </Text>
-                </View>
-                {themeMode === 'system' && (
-                  <Text style={[styles.checkmark, { color: currentColors.text }]}>✓</Text>
-                )}
-              </TouchableOpacity>
+
 
               <TouchableOpacity
                 style={styles.appearanceOption}
@@ -519,21 +469,7 @@ export function SettingsScreen({ onBack, onNavigateToHome, navigation }: Setting
             </Card.Content>
           </Card>
 
-          <Card style={[styles.card, { backgroundColor: currentColors.surface }]}>
-            <Card.Content>
-              <TouchableOpacity
-                style={[styles.settingRow, styles.dangerRow]}
-                onPress={handleClearData}
-                activeOpacity={0.7}
-              >
-                <View style={styles.settingInfo}>
-                  <Text style={[styles.settingLabel, styles.dangerText, { color: currentColors.error }]}>Clear All Data</Text>
-                  <Text style={[styles.settingDescription, { color: currentColors.textSecondary }]}>Delete all your information</Text>
-                </View>
-                <Text style={[styles.arrow, { color: currentColors.textSecondary }]}>›</Text>
-              </TouchableOpacity>
-            </Card.Content>
-          </Card>
+
 
           <Card style={[styles.card, { backgroundColor: currentColors.surface }]}>
             <Card.Content>

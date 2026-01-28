@@ -447,7 +447,7 @@ export function WelcomeScreen({ onNext, navigation }: WelcomeScreenProps) {
               </View>
               <View style={styles.feature}>
                 <MaterialCommunityIcons
-                  name="swap-horizontal"
+                  name="scale-balance"
                   size={32}
                   color={isDark ? '#FFFFFF' : '#000000'}
                 />

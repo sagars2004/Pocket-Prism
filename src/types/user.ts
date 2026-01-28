@@ -11,6 +11,8 @@ export interface SalaryInput {
   payFrequency: PayFrequency;
   state: string;
   payPeriodsPerYear?: number;
+  bonusAmount?: number;
+  bonusType?: 'percentage' | 'amount';
   customBenefits?: CustomBenefit[];
 }
 

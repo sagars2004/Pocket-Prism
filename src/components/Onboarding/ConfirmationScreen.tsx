@@ -161,11 +161,21 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
           <Card style={styles.summaryCard}>
             <Card.Content>
               <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>Annual Salary:</Text>
+                <Text style={styles.summaryLabel}>Annual Base Salary:</Text>
                 <Text style={styles.summaryValue}>
                   {formatCurrency(onboardingData.salary.annualSalary || 0)}
                 </Text>
               </View>
+              {onboardingData.salary.bonusAmount ? (
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryLabel}>Bonus:</Text>
+                  <Text style={styles.summaryValue}>
+                    {onboardingData.salary.bonusType === 'percentage'
+                      ? `${onboardingData.salary.bonusAmount}%`
+                      : formatCurrency(onboardingData.salary.bonusAmount)}
+                  </Text>
+                </View>
+              ) : null}
               <View style={styles.summaryRow}>
                 <Text style={styles.summaryLabel}>Pay Frequency:</Text>
                 <Text style={styles.summaryValue}>
@@ -173,7 +183,7 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
                     ? onboardingData.salary.payPeriodsPerYear
                       ? `${onboardingData.salary.payPeriodsPerYear} times per year`
                       : onboardingData.salary.payFrequency.charAt(0).toUpperCase() +
-                        onboardingData.salary.payFrequency.slice(1).replace(/([A-Z])/g, ' $1')
+                      onboardingData.salary.payFrequency.slice(1).replace(/([A-Z])/g, ' $1')
                     : 'Not set'}
                 </Text>
               </View>
@@ -188,7 +198,7 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
                     ? onboardingData.expenses.livingSituation.toLowerCase() === 'alone'
                       ? 'Single'
                       : onboardingData.expenses.livingSituation.charAt(0).toUpperCase() +
-                        onboardingData.expenses.livingSituation.slice(1)
+                      onboardingData.expenses.livingSituation.slice(1)
                     : 'Not set'}
                 </Text>
               </View>

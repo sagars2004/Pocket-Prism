@@ -822,7 +822,7 @@ export function PlanScreen({ onBack, onNavigateToHome, onNavigateToSettings, nav
         {/* Projected Savings */}
         {expenseAccumulation.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Projected Savings (12 Months)</Text>
+            <Text style={styles.sectionTitle}>Projected Savings ({monthsToProject} Months)</Text>
             <Card style={styles.card}>
               <Card.Content style={styles.cardContent}>
                 {expenseAccumulation.slice(0, 12).map((expense, index) => (

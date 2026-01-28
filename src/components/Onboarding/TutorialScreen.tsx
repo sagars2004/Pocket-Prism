@@ -31,7 +31,7 @@ export function TutorialScreen({ navigation }: TutorialScreenProps) {
       description: 'View a detailed breakdown of your paycheck, including gross pay, taxes, benefits, and your take-home amount.',
     },
     {
-      icon: 'swap-horizontal' as const,
+      icon: 'scale-balance' as const,
       title: 'Smart Trade-offs',
       description: 'Explore decision tradeoffs for things you may be considering, and see the financial impact of each choice.',
     },

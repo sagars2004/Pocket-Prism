@@ -67,6 +67,12 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
   const [state, setState] = useState(onboardingData.salary.state || '');
   const [city, setCity] = useState('');
   const [customPayPeriods, setCustomPayPeriods] = useState('');
+  const [bonusInput, setBonusInput] = useState(
+    onboardingData.salary.bonusAmount ? onboardingData.salary.bonusAmount.toString() : ''
+  );
+  const [bonusType, setBonusType] = useState<'percentage' | 'amount'>(
+    onboardingData.salary.bonusType || 'percentage'
+  );
   const [error, setError] = useState('');
   const [payAmountError, setPayAmountError] = useState('');
   const [stateError, setStateError] = useState('');
@@ -95,6 +101,8 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
       setState('');
       setCity('');
       setCustomPayPeriods('');
+      setBonusInput('');
+      setBonusType('percentage');
       setError('');
       setPayAmountError('');
       setStateError('');
@@ -297,6 +305,8 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
       payFrequency: payFrequency === 'other' ? 'monthly' : payFrequency as PayFrequency,
       state,
       payPeriodsPerYear: periodsPerYear,
+      bonusAmount: bonusInput ? parseFloat(bonusInput) : undefined,
+      bonusType: bonusInput ? bonusType : undefined,
     });
 
     onNext();
@@ -469,44 +479,119 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
             </>
           )}
 
-          <TextInput
-            label={`Paycheck Amount${payFrequency === 'weekly' ? ' (per week)' : payFrequency === 'biweekly' ? ' (every 2 weeks)' : payFrequency === 'monthly' ? ' (per month)' : payFrequency === 'other' ? (customPayPeriods ? ` (${customPayPeriods} times per year)` : '') : ''} *`}
-            placeholder="Enter a value in USD"
-            mode="outlined"
-            keyboardType="numeric"
-            value={payAmount}
-            onChangeText={(text) => {
-              // Prevent negative sign
-              const filteredText = text.replace(/[^0-9.]/g, '');
-              setPayAmount(filteredText);
-              const payAmountNum = parseFloat(filteredText);
-              if (filteredText && (!isNaN(payAmountNum) && payAmountNum >= 0.01)) {
-                setPayAmountError('');
-              } else if (filteredText && (isNaN(payAmountNum) || payAmountNum < 0.01)) {
-                setPayAmountError('Value must be at least $0.01');
-              } else {
-                setPayAmountError('');
-              }
-            }}
-            error={!!payAmountError}
-            style={styles.input}
-            outlineColor={isValidPayAmount() ? '#4CAF50' : (payAmountError ? currentColors.error : undefined)}
-            activeOutlineColor={isValidPayAmount() ? '#4CAF50' : (payAmountError ? currentColors.error : undefined)}
-            left={<TextInput.Affix text="$" />}
-          />
-          {payAmountError && <Text style={styles.errorText}>{payAmountError}</Text>}
+          <View style={{ marginBottom: spacing.xs }}>
+            <Text style={{ ...typography.body, color: currentColors.text, marginBottom: spacing.xs }}>
+              Gross Paycheck Amount <Text style={{ color: currentColors.error || '#EF4444' }}>*</Text>
+            </Text>
+            <TextInput
+              label={payFrequency === 'weekly' ? 'Amount (per week)' : payFrequency === 'biweekly' ? 'Amount (every 2 weeks)' : payFrequency === 'monthly' ? 'Amount (per month)' : payFrequency === 'other' ? (customPayPeriods ? `Amount (${customPayPeriods} times per year)` : 'Amount') : 'Amount'}
+              placeholder="Enter a value in USD"
+              mode="outlined"
+              keyboardType="numeric"
+              value={payAmount}
+              onChangeText={(text) => {
+                // Prevent negative sign
+                const filteredText = text.replace(/[^0-9.]/g, '');
+                setPayAmount(filteredText);
+                const payAmountNum = parseFloat(filteredText);
+                if (filteredText && (!isNaN(payAmountNum) && payAmountNum >= 0.01)) {
+                  setPayAmountError('');
+                } else if (filteredText && (isNaN(payAmountNum) || payAmountNum < 0.01)) {
+                  setPayAmountError('Value must be at least $0.01');
+                } else {
+                  setPayAmountError('');
+                }
+              }}
+              error={!!payAmountError}
+              style={styles.input}
+              outlineColor={isValidPayAmount() ? '#4CAF50' : (payAmountError ? currentColors.error : undefined)}
+              activeOutlineColor={isValidPayAmount() ? '#4CAF50' : (payAmountError ? currentColors.error : undefined)}
+              left={<TextInput.Affix text="$" />}
+            />
+            {payAmountError && <Text style={styles.errorText}>{payAmountError}</Text>}
+          </View>
+
+          <View style={{ marginBottom: spacing.md }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xs }}>
+              <Text style={{ ...typography.body, color: currentColors.text }}>Annual Bonus (optional)</Text>
+              <View style={{ flexDirection: 'row', backgroundColor: currentColors.surface, borderRadius: 8, overflow: 'hidden', borderWidth: 1, borderColor: currentColors.border }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setBonusType('percentage');
+                    setBonusInput('');
+                  }}
+                  style={{
+                    paddingVertical: 6,
+                    paddingHorizontal: 25,
+                    backgroundColor: bonusType === 'percentage' ? (isDark ? '#e5e5e5' : '#000000') : 'transparent'
+                  }}
+                >
+                  <Text style={{
+                    ...typography.caption,
+                    color: bonusType === 'percentage' ? (isDark ? '#000000' : '#ffffff') : currentColors.textSecondary,
+                    fontWeight: '700'
+                  }}>%</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setBonusType('amount');
+                    setBonusInput('');
+                  }}
+                  style={{
+                    paddingVertical: 6,
+                    paddingHorizontal: 25,
+                    backgroundColor: bonusType === 'amount' ? (isDark ? '#e5e5e5' : '#000000') : 'transparent'
+                  }}
+                >
+                  <Text style={{
+                    ...typography.caption,
+                    color: bonusType === 'amount' ? (isDark ? '#000000' : '#ffffff') : currentColors.textSecondary,
+                    fontWeight: '700'
+                  }}>$</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <TextInput
+              label={`Bonus ${bonusType === 'percentage' ? 'Percentage' : 'Amount'}`}
+              placeholder={bonusType === 'percentage' ? "Enter a percentage" : "Enter a value in USD"}
+              mode="outlined"
+              keyboardType="numeric"
+              value={bonusInput}
+              onChangeText={(text) => {
+                // Prevent negative sign
+                const filteredText = text.replace(/[^0-9.]/g, '');
+
+                if (bonusType === 'percentage') {
+                  const val = parseFloat(filteredText);
+                  if (!isNaN(val) && val > 100) {
+                    // Don't update if > 100
+                    return;
+                  }
+                }
+                setBonusInput(filteredText);
+              }}
+              style={styles.input}
+              right={bonusType === 'percentage' ? <TextInput.Affix text="%" /> : null}
+              left={bonusType === 'amount' ? <TextInput.Affix text="$" /> : null}
+            />
+          </View>
 
           <View style={styles.locationContainer}>
             <View style={styles.locationInputContainer}>
-              <TextInput
-                label="City (optional)"
-                placeholder="Enter the city you currently reside in"
-                mode="outlined"
-                value={city}
-                onChangeText={setCity}
-                style={[styles.input, styles.locationInput]}
-                autoCapitalize="words"
-              />
+              <View style={{ marginBottom: spacing.xs }}>
+                <Text style={{ ...typography.body, color: currentColors.text, marginBottom: spacing.xs }}>
+                  City (optional)
+                </Text>
+                <TextInput
+                  placeholder="Please enter your city of residence"
+                  mode="outlined"
+                  value={city}
+                  onChangeText={setCity}
+                  style={[styles.input, styles.locationInput]}
+                  autoCapitalize="words"
+                />
+              </View>
+
               <View style={styles.pickerContainer}>
                 <Picker
                   label={<Text>State <Text style={{ color: currentColors.error || '#EF4444' }}>*</Text></Text>}
@@ -542,7 +627,7 @@ export function SalaryInfoScreen({ onNext, onBack, navigation }: SalaryInfoScree
                 />
               )}
               <Text style={styles.locateButtonText}>
-                {isLocating ? 'Locating...' : 'Use My Location'}
+                {isLocating ? 'Locating...' : 'Use Current Location'}
               </Text>
             </TouchableOpacity>
           </View>
