@@ -18,7 +18,7 @@ interface FooterProps {
 }
 
 export function Footer({ onHomePress, onPlanPress, onTipsPress, onSettingsPress, navigation }: FooterProps) {
-  const { currentColors } = useTheme();
+  const { currentColors, isDark } = useTheme();
   const { clearUserData } = useUser();
   const { resetOnboarding } = useOnboarding();
 
@@ -102,13 +102,21 @@ export function Footer({ onHomePress, onPlanPress, onTipsPress, onSettingsPress,
     );
   };
 
+  const getActiveTab = () => {
+    if (routeName === 'Settings') return 'Settings';
+    if (routeName === 'Plan') return 'Plan';
+    if (routeName === 'Tips') return 'Tips';
+    return 'Home';
+  };
+  const activeTab = getActiveTab();
+
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
       justifyContent: 'space-around',
       alignItems: 'center',
       paddingVertical: spacing.sm,
-      paddingHorizontal: spacing.lg,
+      paddingHorizontal: spacing.md,
       borderTopWidth: 4,
       borderTopColor: currentColors.borderLight,
       backgroundColor: currentColors.surface,
@@ -119,7 +127,7 @@ export function Footer({ onHomePress, onPlanPress, onTipsPress, onSettingsPress,
       justifyContent: 'center',
       paddingVertical: spacing.xs,
       paddingHorizontal: spacing.md,
-      minWidth: 70,
+      minWidth: 60,
     },
     icon: {
       marginBottom: 2,
@@ -127,9 +135,16 @@ export function Footer({ onHomePress, onPlanPress, onTipsPress, onSettingsPress,
     label: {
       ...typography.caption,
       color: currentColors.textSecondary,
-      fontSize: 13,
+      fontSize: 12,
       fontWeight: '500',
     },
+    activeLine: {
+      height: 3,
+      width: 20,
+      backgroundColor: isDark ? '#FFFFFF' : '#000000',
+      marginTop: 4,
+      borderRadius: 2,
+    }
   });
 
   return (
@@ -141,11 +156,12 @@ export function Footer({ onHomePress, onPlanPress, onTipsPress, onSettingsPress,
       >
         <MaterialCommunityIcons
           name="home-variant-outline"
-          size={28}
-          color={currentColors.text}
+          size={26}
+          color={activeTab === 'Home' ? currentColors.text : currentColors.textSecondary}
           style={styles.icon}
         />
-        <Text style={styles.label}>Home</Text>
+        <Text style={[styles.label, activeTab === 'Home' && { color: currentColors.text, fontWeight: '700' }]}>Home</Text>
+        {activeTab === 'Home' && <View style={styles.activeLine} />}
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -155,11 +171,12 @@ export function Footer({ onHomePress, onPlanPress, onTipsPress, onSettingsPress,
       >
         <MaterialCommunityIcons
           name="chart-timeline-variant"
-          size={28}
-          color={currentColors.text}
+          size={26}
+          color={activeTab === 'Plan' ? currentColors.text : currentColors.textSecondary}
           style={styles.icon}
         />
-        <Text style={styles.label}>Plan</Text>
+        <Text style={[styles.label, activeTab === 'Plan' && { color: currentColors.text, fontWeight: '700' }]}>Plan</Text>
+        {activeTab === 'Plan' && <View style={styles.activeLine} />}
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -169,11 +186,12 @@ export function Footer({ onHomePress, onPlanPress, onTipsPress, onSettingsPress,
       >
         <MaterialCommunityIcons
           name="lightbulb-on-outline"
-          size={28}
-          color={currentColors.text}
+          size={26}
+          color={activeTab === 'Tips' ? currentColors.text : currentColors.textSecondary}
           style={styles.icon}
         />
-        <Text style={styles.label}>Tips</Text>
+        <Text style={[styles.label, activeTab === 'Tips' && { color: currentColors.text, fontWeight: '700' }]}>Tips</Text>
+        {activeTab === 'Tips' && <View style={styles.activeLine} />}
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -183,11 +201,12 @@ export function Footer({ onHomePress, onPlanPress, onTipsPress, onSettingsPress,
       >
         <MaterialCommunityIcons
           name="cog-outline"
-          size={28}
-          color={currentColors.text}
+          size={26}
+          color={activeTab === 'Settings' ? currentColors.text : currentColors.textSecondary}
           style={styles.icon}
         />
-        <Text style={styles.label}>Settings</Text>
+        <Text style={[styles.label, activeTab === 'Settings' && { color: currentColors.text, fontWeight: '700' }]}>Settings</Text>
+        {activeTab === 'Settings' && <View style={styles.activeLine} />}
       </TouchableOpacity>
     </View>
   );

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -66,14 +66,69 @@ function getPayPeriodsPerMonth(frequency: string, payPeriodsPerYear?: number): n
 
 export function PlanScreen({ onBack, onNavigateToHome, onNavigateToSettings, navigation }: PlanScreenProps) {
   const { currentColors, isDark } = useTheme();
-  const { userData } = useUser();
+  const { userData, setUserData } = useUser();
   const [monthsToProject, setMonthsToProject] = useState('12');
   const sliderValues = [3, 6, 9, 12];
+
   const [expenses, setExpenses] = useState<ExpenseItem[]>([
     { id: '1', name: 'Rent', amount: '' },
     { id: '2', name: 'Groceries', amount: '' },
     { id: '3', name: 'Utilities', amount: '' },
   ]);
+
+  // Goal Tracker State
+  const [goalName, setGoalName] = useState('');
+  const [goalAmount, setGoalAmount] = useState('');
+
+  // Persist data logic
+  const isLoadedFromContext = useRef(false);
+
+  // Load from context on mount or when available
+  useEffect(() => {
+    if (userData?.plan && !isLoadedFromContext.current) {
+      if (userData.plan.monthsToProject) setMonthsToProject(userData.plan.monthsToProject);
+      if (userData.plan.monthlyExpenses && userData.plan.monthlyExpenses.length > 0) {
+        setExpenses(userData.plan.monthlyExpenses);
+      }
+      if (userData.plan.goalName) setGoalName(userData.plan.goalName);
+      if (userData.plan.goalAmount) setGoalAmount(userData.plan.goalAmount);
+      isLoadedFromContext.current = true;
+    }
+  }, [userData]);
+
+  // Save to context on change (debounced)
+  useEffect(() => {
+    // Determine if we should save
+    // If not loaded yet, and plan exists in user data, don't overwrite with defaults
+    if (!isLoadedFromContext.current && userData?.plan) {
+      return;
+    }
+
+    // If plan doesn't exist, we can mark as loaded (using defaults) and proceed to save these defaults
+    if (!userData?.plan) {
+      isLoadedFromContext.current = true;
+    }
+
+    const timer = setTimeout(() => {
+      if (userData) {
+        const newPlan = {
+          monthsToProject,
+          monthlyExpenses: expenses,
+          goalName,
+          goalAmount
+        };
+
+        // Prevent unnecessary saves of identical data? 
+        // For now rely on debouncing and Replit/Storage handling.
+        setUserData({
+          ...userData,
+          plan: newPlan
+        });
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [monthsToProject, expenses, goalName, goalAmount]);
 
   const projections = useMemo(() => {
     if (!userData?.salary) return [];
@@ -784,10 +839,116 @@ export function PlanScreen({ onBack, onNavigateToHome, onNavigateToSettings, nav
           </Card>
         </View>
 
+        {/* Time-to-Goal Calculator */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Time-to-Goal Calculator</Text>
+          <Card style={styles.card}>
+            <Card.Content style={styles.cardContent}>
+              <View style={{ marginBottom: spacing.md }}>
+                <Text style={styles.chartTitle}>
+                  See how long it takes to reach a financial goal with your current savings.
+                </Text>
+              </View>
+
+              <View style={{ flexDirection: 'row', gap: spacing.md, marginBottom: spacing.md }}>
+                <View style={{ flex: 1 }}>
+                  <TextInput
+                    label="Goal Name"
+                    placeholder=""
+                    mode="outlined"
+                    value={goalName}
+                    onChangeText={setGoalName}
+                    dense
+                    style={{ marginBottom: 0 }}
+                    textColor={currentColors.text}
+                    theme={{ colors: { onSurfaceVariant: currentColors.textSecondary } }}
+                  />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <TextInput
+                    label="Amount"
+                    mode="outlined"
+                    keyboardType="numeric"
+                    value={goalAmount}
+                    onChangeText={(text) => setGoalAmount(text.replace(/[^0-9.]/g, ''))}
+                    left={<TextInput.Affix text="$" />}
+                    dense
+                    style={{ marginBottom: 0 }}
+                    textColor={currentColors.text}
+                    theme={{ colors: { onSurfaceVariant: currentColors.textSecondary } }}
+                  />
+                </View>
+              </View>
+
+              {goalAmount && parseFloat(goalAmount) > 0 && currentMonthBreakdown && (
+                <View style={{ marginTop: spacing.sm, padding: spacing.sm, backgroundColor: currentColors.background, borderRadius: 8, borderWidth: 2, borderColor: currentColors.borderLight }}>
+                  {(() => {
+                    const monthlySavings = currentMonthBreakdown.net - totalMonthlyExpenses;
+                    const goal = parseFloat(goalAmount);
+
+                    if (monthlySavings <= 0) {
+                      return (
+                        <View style={{ alignItems: 'center', padding: spacing.sm }}>
+                          <MaterialCommunityIcons name="alert-circle-outline" size={32} color="#EF4444" />
+                          <Text style={[styles.statValue, { color: '#EF4444', marginTop: spacing.sm, textAlign: 'center' }]}>
+                            No Savings Available
+                          </Text>
+                          <Text style={[styles.chartLabel, { marginTop: spacing.xs, marginBottom: spacing.md, textAlign: 'center' }]}>
+                            Your monthly expenses ({formatCurrency(totalMonthlyExpenses)}) exceed or equal your net pay ({formatCurrency(currentMonthBreakdown.net)}).
+                          </Text>
+                          <Text style={[styles.chartLabel, { color: currentColors.text, textAlign: 'center' }]}>
+                            Try adjusting your "Monthly Expenses" above to see how saving even a small amount helps!
+                          </Text>
+                        </View>
+                      );
+                    }
+
+                    const months = Math.ceil(goal / monthlySavings);
+                    const years = (months / 12).toFixed(1);
+                    const progress = Math.min(100, (monthlySavings / goal) * 100);
+
+                    return (
+                      <>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xs }}>
+                          <Text style={styles.statLabel}>Monthly Savings:</Text>
+                          <Text style={[styles.statValue, { color: '#4CAF50' }]}>{formatCurrency(monthlySavings)}</Text>
+                        </View>
+
+                        <View style={{ marginVertical: spacing.md, alignItems: 'center' }}>
+                          <Text style={[styles.statValue, { fontSize: 24, fontWeight: '700', color: currentColors.primary }]}>
+                            {months} Month{months !== 1 ? 's' : ''}
+                          </Text>
+                          {parseFloat(years) >= 1 && (
+                            <Text style={styles.chartLabel}>
+                              (approx. {years} years)
+                            </Text>
+                          )}
+                        </View>
+
+                        <View style={{ width: '85%', alignSelf: 'center' }}>
+                          <Text style={[styles.chartLabel, { marginBottom: spacing.xs, textAlign: 'left' }]}>
+                            1 Month Progress ({progress.toFixed(1)}%)
+                          </Text>
+                          <View style={{ height: 8, backgroundColor: currentColors.borderLight, borderRadius: 4, overflow: 'hidden', marginBottom: spacing.xs }}>
+                            <View style={{ height: '100%', width: `${progress}%`, backgroundColor: currentColors.primary }} />
+                          </View>
+                          <Text style={[styles.chartLabel, { fontSize: 10, color: currentColors.textSecondary, fontStyle: 'italic' }]}>
+                            This bar shows how much one single month of saving helps to reach your desired goal.
+                          </Text>
+                        </View>
+                      </>
+                    );
+                  })()}
+                </View>
+              )}
+            </Card.Content>
+          </Card>
+        </View>
+
         {/* Tradeoff Comparisons */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Tradeoff Comparisons (This Month)</Text>
-          <View style={{ gap: spacing.md }}>
+          <View style={{ gap: spacing.sm }}>
             {tradeoffComparisons.map((comparison, index) => (
               <Card key={index} style={styles.card}>
                 <Card.Content style={styles.cardContent}>

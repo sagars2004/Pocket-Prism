@@ -29,4 +29,10 @@ export interface UserData {
   salary: SalaryInput;
   expenses: ExpenseContext;
   onboardingComplete: boolean;
+  plan?: {
+    monthlyExpenses: Array<{ id: string; name: string; amount: string }>;
+    goalName?: string;
+    goalAmount?: string;
+    monthsToProject?: string;
+  };
 }

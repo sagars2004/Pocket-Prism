@@ -14,6 +14,7 @@ import { TutorialScreen } from '../components/Onboarding/TutorialScreen';
 import { useUser } from '../context/UserContext';
 import { TipsScreen } from '../components/Tips/TipsScreen';
 
+
 export type RootStackParamList = {
   Welcome: undefined;
   Tutorial: undefined;
@@ -26,6 +27,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Plan: undefined;
   Tips: undefined;
+
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

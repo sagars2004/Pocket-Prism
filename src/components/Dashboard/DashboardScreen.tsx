@@ -119,6 +119,6 @@ export function DashboardScreen({ onViewTradeoffs, onViewBreakdown, navigation }
       <SafeAreaView edges={['bottom']} style={styles.footerContainer}>
         <Footer navigation={navigation} />
       </SafeAreaView>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }

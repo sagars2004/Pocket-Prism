@@ -321,7 +321,7 @@ export function BreakdownScreen({ onBack, navigation }: BreakdownScreenProps) {
 
           <View style={styles.taxSection}>
             <View style={styles.sectionHeaderRow}>
-              <Text style={styles.sectionHeader}>Taxes</Text>
+              <Text style={styles.sectionHeader}>Estimated Taxes</Text>
               <Text style={styles.statValue}>Total: {formatCurrency(breakdown.taxes.total)}</Text>
             </View>
             <BreakdownSection
@@ -363,6 +363,8 @@ export function BreakdownScreen({ onBack, navigation }: BreakdownScreenProps) {
                           value={benefit.name}
                           onChangeText={(text) => handleUpdateBenefit(benefit.id, 'name', text)}
                           dense
+                          multiline={false}
+                          numberOfLines={1}
                           style={{ marginBottom: 0 }}
                           textColor={currentColors.text}
                           theme={{ colors: { onSurfaceVariant: currentColors.textSecondary } }}
