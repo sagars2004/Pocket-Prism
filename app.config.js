@@ -44,6 +44,16 @@ module.exports = {
     web: {
       favicon: './assets/favicon.png',
     },
+    plugins: [
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "finsh-mobile",
+          "organization": "sagar-sahu"
+        }
+      ]
+    ],
     extra: {
       PRIVATE_RESEND_API_KEY: process.env.PRIVATE_RESEND_API_KEY,
       PRIVATE_EMAIL: process.env.PRIVATE_EMAIL,

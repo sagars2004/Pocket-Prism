@@ -49,3 +49,5 @@ capacitor.config.json
 # Convex (when integrated)
 convex/_generated/
 .convex/
+
+.env.local
