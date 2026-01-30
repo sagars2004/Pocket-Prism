@@ -23,10 +23,10 @@ We collect minimal, anonymous logs solely for stability:
 
 ### Data We Do NOT Collect
 We have strictly zero access to:
-*   ❌ Your name, email, or phone number
-*   ❌ Your contacts or photos
-*   ❌ Your precise location
-*   ❌ Your bank account credentials
+*   Your name, email, or phone number
+*   Your contacts or photos
+*   Your precise location
+*   Your bank account credentials
 
 ### Third-Party Services
 We trust the following services to keep Finsh running smoothly:
@@ -43,4 +43,4 @@ Questions? Contact us via the "Send Feedback" button in the app settings, or sub
 
 [Home](./) • [Support](./support)
 
-© 2026 Finsh. All rights reserved.
+© 2026 Sagar Sahu. All rights reserved.

@@ -8,8 +8,8 @@ title: Home
   <h1 style="font-size: 3em; margin: 20px 0 10px;">This is Finsh.</h1>
   <p style="font-size: 1.5em; color: #666; max-width: 600px; margin: 0 auto;">
     Keep your paycheck swimming in the right direction.
-    <br></br>
-    <br>Decode. Compare. Plan.</br>
+    <br>
+    <br>Decode. Compare. Plan.
   </p>
   
   <div style="margin-top: 40px;">
@@ -50,11 +50,11 @@ title: Home
 ## Screenshots
 
 <div style="display: flex; overflow-x: auto; gap: 20px; padding: 20px 0; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
-  <img src="assets/phone/i1.png" alt="Finsh Monthly Plan" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-  <img src="assets/phone/i2.png" alt="Finsh Breakdown Chart" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-  <img src="assets/phone/i3.png" alt="Finsh Tradeoffs" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-  <img src="assets/phone/i4.png" alt="Finsh Tax Estimates" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-  <img src="assets/phone/i5.png" alt="Finsh Settings" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i1.png" alt="Finsh Monthly Plan" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i2.png" alt="Finsh Breakdown Chart" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i3.png" alt="Finsh Tradeoffs" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i4.png" alt="Finsh Tax Estimates" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i5.png" alt="Finsh Settings" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 </div>
 
 <br>
@@ -112,5 +112,5 @@ title: Home
   <p>
     <a href="./privacy">Privacy Policy</a> • <a href="./support">Support</a>
   </p>
-  <p>© 2026 Finsh. All rights reserved.</p>
+  <p>© 2026 Sagar Sahu. All rights reserved.</p>
 </div>

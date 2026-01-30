@@ -41,4 +41,4 @@ We calculate estimates based on standard federal and state tax brackets to give 
 
 [Home](./) • [Privacy Policy](./privacy)
 
-© 2026 Finsh. All rights reserved.
+© 2026 Sagar Sahu. All rights reserved.
