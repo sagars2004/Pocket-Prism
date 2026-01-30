@@ -49,12 +49,25 @@ title: Home
 
 ## Screenshots
 
-<div style="display: flex; overflow-x: auto; gap: 20px; padding: 20px 0; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+### iPhone
+
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px 0;">
   <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i1.png" alt="Finsh Monthly Plan" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
   <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i2.png" alt="Finsh Breakdown Chart" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
   <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i3.png" alt="Finsh Tradeoffs" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
   <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i4.png" alt="Finsh Tax Estimates" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
   <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i5.png" alt="Finsh Settings" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+</div>
+
+<br>
+
+### iPad
+
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px 0;">
+  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/1.png" alt="Finsh Monthly Plan" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/2.png" alt="Finsh Breakdown Chart" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/3.png" alt="Finsh Tradeoffs" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/4.png" alt="Finsh Tax Estimates" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 </div>
 
 <br>
