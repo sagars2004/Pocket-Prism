@@ -49,25 +49,37 @@ title: Home
 
 ## Screenshots
 
-### iPhone
+### Finsh on iPhone
 
-<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px 0;">
-  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i1.png" alt="Finsh Monthly Plan" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i2.png" alt="Finsh Breakdown Chart" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i3.png" alt="Finsh Tradeoffs" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i4.png" alt="Finsh Tax Estimates" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i5.png" alt="Finsh Settings" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+<div style="position: relative; max-width: 100%;">
+  <button onclick="document.getElementById('iphone-scroll').scrollBy({left: -300, behavior: 'smooth'})" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 20px;">&#8249;</button>
+  
+  <div id="iphone-scroll" style="display: flex; overflow-x: auto; gap: 20px; padding: 20px 40px; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+    <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i1.png" alt="Finsh Monthly Plan" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-shrink: 0;">
+    <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i2.png" alt="Finsh Breakdown Chart" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-shrink: 0;">
+    <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i3.png" alt="Finsh Tradeoffs" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-shrink: 0;">
+    <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i4.png" alt="Finsh Tax Estimates" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-shrink: 0;">
+    <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/phone/i5.png" alt="Finsh Settings" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-shrink: 0;">
+  </div>
+
+  <button onclick="document.getElementById('iphone-scroll').scrollBy({left: 300, behavior: 'smooth'})" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 20px;">&#8250;</button>
 </div>
 
 <br>
 
-### iPad
+### Finsh on iPad
 
-<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px 0;">
-  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/1.png" alt="Finsh Monthly Plan" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/2.png" alt="Finsh Breakdown Chart" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/3.png" alt="Finsh Tradeoffs" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/4.png" alt="Finsh Tax Estimates" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+<div style="position: relative; max-width: 100%;">
+  <button onclick="document.getElementById('ipad-scroll').scrollBy({left: -400, behavior: 'smooth'})" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 20px;">&#8249;</button>
+
+  <div id="ipad-scroll" style="display: flex; overflow-x: auto; gap: 20px; padding: 20px 40px; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+    <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/1.png" alt="Finsh Monthly Plan" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-shrink: 0;">
+    <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/2.png" alt="Finsh Breakdown Chart" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-shrink: 0;">
+    <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/3.png" alt="Finsh Tradeoffs" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-shrink: 0;">
+    <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/tablet/4.png" alt="Finsh Tax Estimates" style="height: 500px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-shrink: 0;">
+  </div>
+
+  <button onclick="document.getElementById('ipad-scroll').scrollBy({left: 400, behavior: 'smooth'})" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 20px;">&#8250;</button>
 </div>
 
 <br>
