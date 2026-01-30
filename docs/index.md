@@ -1,49 +1,61 @@
-# Privacy Policy for Finsh
-*Effective Date: January 29, 2026*
+---
+layout: default
+title: Home
+---
 
-## Introduction
-Finsh ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use the Finsh mobile application.
+<div style="text-align: center; padding: 40px 0;">
+  <img src="https://raw.githubusercontent.com/sagars2004/Finsh/main/assets/icon.png" alt="Finsh Logo" width="120" style="border-radius: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <h1 style="font-size: 3em; margin: 20px 0 10px;">Finsh</h1>
+  <p style="font-size: 1.5em; color: #666; max-width: 600px; margin: 0 auto;">
+    Financial clarity without the compromise.
+    <br>Private. Local. Secure.
+  </p>
+  
+  <div style="margin-top: 40px;">
+    <a href="https://apps.apple.com/us/app/finsh/id123456789" style="background: #007AFF; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 1.1em;">Download on the App Store</a>
+  </div>
+</div>
 
-## Our Commitment to Privacy
-Finsh is designed with privacy in mind. We believe your financial data belongs to you. We store your personal financial inputs locally on your device specifically to ensure your sensitive data remains in your control.
+<hr style="margin: 60px 0; border: none; border-top: 1px solid #eee;">
 
-## Information We Collect
+## Why Finsh?
 
-### Information Automatically Collected
-*   **Crash & Error Logs:** We use Sentry to collect anonymous crash reports and error logs. This helps us fix bugs and improve app stability. These logs may include your device model, operating system version, and the stack trace of the error, but they do not help us identify you personally.
-*   **App Preferences:** We store your theme preference (Light/Dark) locally on your device.
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 30px;">
+  
+  <div style="padding: 20px; border: 1px solid #eee; border-radius: 12px;">
+    <h3>🔒 Private by Design</h3>
+    <p>Your financial data never leaves your device. No servers, no tracking, no peace of mind lost.</p>
+  </div>
 
-### Information You Provide (Stored Locally)
-*   **Financial Inputs:** Salary details, state of residence, filing status, and expense data.
-*   **Goals & Plans:** Savings goals, names of expenses, and budget limits.
-*   **Note:** All of the above data is stored **locally on your device**. Finsh does not transmit your financial inputs to any external server or database.
+  <div style="padding: 20px; border: 1px solid #eee; border-radius: 12px;">
+    <h3>💰 Smart Tax Estimates</h3>
+    <p>Automatically calculates federal and state taxes to give you a realistic view of your actual take-home pay.</p>
+  </div>
 
-## Information We Do NOT Collect
-*   We do not collect your real name, email address, or phone number.
-*   We do not access your contacts, photos, or other personal data on your device.
-*   We do not track your precise location (we only use the state you select for tax calculations).
-*   We do not sell your data to third parties.
+  <div style="padding: 20px; border: 1px solid #eee; border-radius: 12px;">
+    <h3>📊 Flexible Planning</h3>
+    <p>Simulate tradeoffs between salary, savings, and expenses to build the perfect financial plan for you.</p>
+  </div>
 
-## How We Use Your Information
-We use the information we collect solely to:
-*   Calculate accurate tax estimates and financial projections within the app.
-*   Fix crashes and improve the performance of the app (via Sentry).
-*   Remember your visual preferences (theme).
+</div>
 
-## Third-Party Services
-We use the following third-party services to improve the app:
-*   **Sentry:** For error tracking and performance monitoring. Sentry guarantees that they do not sell your data. [Sentry Privacy Policy](https://sentry.io/privacy/)
-*   **Resend:** For sending transactional emails and handling user feedback. [Resend Privacy Policy](https://resend.com/legal/privacy-policy)
+<br>
+<br>
 
-## Data Storage and Security
-Your financial data is stored securely on your own device using local storage technologies. We do not maintain a central database of user financial records.
-*   **Security:** Since data is on your device, it is protected by your device's own security features (passcode, FaceID, TouchID).
+## Screenshots
 
-## Children's Privacy
-Finsh does not knowingly collect information from children under 13. If you are a parent or guardian and believe your child has provided us with personal information, please contact us so we can investigate, although we do not have a central database of users to delete from.
+<div style="display: flex; overflow-x: auto; gap: 20px; padding: 20px 0;">
+  <!-- Placeholders for screenshots - replace URLs with actual screenshot hosting links later if needed -->
+  <div style="min-width: 250px; height: 500px; background: #f5f5f7; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #888;">Screenshot 1</div>
+  <div style="min-width: 250px; height: 500px; background: #f5f5f7; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #888;">Screenshot 2</div>
+  <div style="min-width: 250px; height: 500px; background: #f5f5f7; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #888;">Screenshot 3</div>
+</div>
 
-## Changes to This Privacy Policy
-We may update this Privacy Policy from time to time. We will notify you of any changes by updating the "Effective Date" at the top of this policy. Continued use of the app after changes constitutes acceptance of the updated policy.
+<hr style="margin: 60px 0; border: none; border-top: 1px solid #eee;">
 
-## Contact Us
-If you have questions about this Privacy Policy, please contact us through the App Store, or submit an in-app feedback request.
+<div style="text-align: center; color: #888; font-size: 0.9em;">
+  <p>
+    <a href="./privacy">Privacy Policy</a> • <a href="./support">Support</a>
+  </p>
+  <p>© 2026 Finsh. All rights reserved.</p>
+</div>

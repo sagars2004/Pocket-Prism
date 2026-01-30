@@ -1,0 +1,8 @@
+theme: jekyll-theme-minimal
+title: Finsh
+description: Financial Planning & Tax Estimation. Private, Local, Secure.
+
+header_pages:
+  - index.md
+  - support.md
+  - privacy.md
