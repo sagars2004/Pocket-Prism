@@ -20,8 +20,8 @@ interface SettingsScreenProps {
 }
 
 // Replace with your valid Resend API Key
-const RESEND_API_KEY = Constants.expoConfig?.extra?.PRIVATE_RESEND_API_KEY ?? '';
-const FEEDBACK_EMAIL_TO = Constants.expoConfig?.extra?.PRIVATE_EMAIL ?? '';
+const RESEND_API_KEY = Constants.expoConfig?.extra?.PRIVATE_RESEND_API_KEY || '';
+const FEEDBACK_EMAIL_TO = Constants.expoConfig?.extra?.PRIVATE_EMAIL || '';
 
 export function SettingsScreen({ onBack, onNavigateToHome, navigation }: SettingsScreenProps) {
   const { userData, clearUserData } = useUser();
