@@ -142,7 +142,6 @@ export function ConfirmationScreen({ onComplete, onBack, navigation }: Confirmat
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        scrollEnabled={false}
       >
         <View style={styles.content}>
           <View style={styles.logoContainer}>
